@@ -2,10 +2,11 @@ package Wordle;
 
 import java.util.ArrayList;
 
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 public class Metodos {
-	public void DeshabilitarJTextField(ArrayList <JTextField> fila) {
+	public static void DeshabilitarJTextField(ArrayList <JTextField> fila) {
 		for(int i=0;i<fila.size();i++) {
 			fila.get(i).setEnabled(false);
 		}
@@ -18,17 +19,27 @@ public class Metodos {
 	}
 	
 	//Metodo que sirve para comprobar si un TextField es una letra correcta
-	public void ComprobarLetraJTextField(ArrayList <JTextField> fila) {
-		String letra;
+	public static boolean ComprobarLetraJTextField(ArrayList <JTextField> fila,JLabel ERROR) {
 		for(int i=0;i<fila.size();i++) {
-			letra=fila.get(i).getText();
-			Character letra2=letra.charAt(0);
-			if(!Character.isLetter(letra2)) {
-				
+			if(!fila.get(i).getText().isEmpty()) {
+				String letra=fila.get(i).getText().toUpperCase();
+				if(letra.length()>1) {
+					letra=String.valueOf(letra.charAt(0));
+					fila.get(i).setText(letra);
+					char comprobarletra=letra.charAt(0);
+					if(!Character.isLetter(comprobarletra)) {
+						return false;
+					}
+				}
 			}
 		}
-		
-		
+		return true;
+	}
+	
+	public static void CrearPalabraFila(ArrayList <JTextField> f,String palabra) {
+		for(int i=0;i<f.size();i++) {
+			palabra+=f.get(i).getText();
+		}
 	}
 
 }
