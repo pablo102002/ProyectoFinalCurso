@@ -17,6 +17,8 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.CaretEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Ventana {
 
@@ -331,6 +333,27 @@ public class Ventana {
 		btn_EnviarPalabra.setBounds(222, 617, 105, 27);
 		frame.getContentPane().add(btn_EnviarPalabra);
 		
+		/*
+		 * Creamos una ArrayList la cual contendra muchas palabras las cuales luego se pasaran a 
+		 * un String el cual sera la palabra la cual tienen que adivinar
+		 */
+		ArrayList<String> palabrasDiccionario = new ArrayList<String>();
+		palabrasDiccionario.add("HUESO");
+		palabrasDiccionario.add("TIMAR");
+		palabrasDiccionario.add("MIRAR");
+		palabrasDiccionario.add("HACER");
+		palabrasDiccionario.add("ASPAS");
+		palabrasDiccionario.add("TRAES");
+		palabrasDiccionario.add("OSTRA");
+		palabrasDiccionario.add("LIMON");
+		palabrasDiccionario.add("RATON");
+		palabrasDiccionario.add("SITIO");
+		
+		int numero = (int)(Math.random()*palabrasDiccionario.size()-1+1);
+		final String palabraResuelta=palabrasDiccionario.get(numero);
+		System.out.println(palabraResuelta);
+	
+		
 		ArrayList<JTextField> fila1 = new ArrayList<JTextField>();
 		fila1.add(textField_Fila1Letra1);
 		fila1.add(textField_Fila1Letra2);
@@ -374,30 +397,35 @@ public class Ventana {
 		fila1.add(textField_Fila6Letra4);
 		fila1.add(textField_Fila6Letra5);
 		
+		//Mirar tab order java en internet para cambiar de un texfield a otro
 		
-		
-		
-		textField_Fila1Letra1.addCaretListener(new CaretListener() {
-			public void caretUpdate(CaretEvent arg0) {
-				if(!textField_Fila1Letra1.getText().isEmpty()) {
-					if(textField_Fila1Letra1.getText().length()>1) {
-						char letra=textField_Fila1Letra1.getText().charAt(0);
-						textField_Fila1Letra1.setText(String.valueOf(letra));
-					}
-				}
+		textField_Fila1Letra1.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				int key = e.getKeyChar();
+
+				boolean may = key >= 65 && key <= 90;
+				boolean min = key >= 97 && key <= 122;
+				
+				if (!(min || may) || (textField_Fila1Letra1.getText().length() > 0) )
+			    {
+			        e.consume();
+			    }
 			}
 		});
 		
 
 		btn_EnviarPalabra.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				boolean comprobar=Metodos.ComprobarLetraJTextField(fila1,etiqueta_ErrorFila1);
-				if(comprobar) {
+				
+				if(contadorFila==0) {
 				String palabraFila1="";
-				Metodos.CrearPalabraFila(fila1,palabraFila1);
-				contadorFila++;
-				Metodos.DeshabilitarJTextField(fila1);
+				palabraFila1=Metodos.CrearPalabraFila(fila1, palabraFila1);
+				System.out.println(palabraFila1);
+				Metodos.ComprobarPalabraCorrecta(fila1,palabraFila1,palabraResuelta);
+				//contadorFila++;
 				}
+				
 				
 				
 				

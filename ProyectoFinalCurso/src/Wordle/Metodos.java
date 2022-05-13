@@ -1,5 +1,6 @@
 package Wordle;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
@@ -12,34 +13,38 @@ public class Metodos {
 		}
 	}
 	
-	public void HabilitarJTextField(ArrayList <JTextField> fila) {
+	public static void HabilitarJTextField(ArrayList <JTextField> fila) {
 		for(int i=0;i<fila.size();i++) {
 			fila.get(i).setEnabled(true);
 		}
 	}
 	
-	//Metodo que sirve para comprobar si un TextField es una letra correcta
-	public static boolean ComprobarLetraJTextField(ArrayList <JTextField> fila,JLabel ERROR) {
-		for(int i=0;i<fila.size();i++) {
-			if(!fila.get(i).getText().isEmpty()) {
-				String letra=fila.get(i).getText().toUpperCase();
-				if(letra.length()>1) {
-					letra=String.valueOf(letra.charAt(0));
-					fila.get(i).setText(letra);
-					char comprobarletra=letra.charAt(0);
-					if(!Character.isLetter(comprobarletra)) {
-						return false;
-					}
-				}
-			}
-		}
-		return true;
-	}
 	
-	public static void CrearPalabraFila(ArrayList <JTextField> f,String palabra) {
+	public static String CrearPalabraFila(ArrayList <JTextField> f,String palabra) {
 		for(int i=0;i<f.size();i++) {
 			palabra+=f.get(i).getText();
 		}
+		return palabra;
 	}
+	public static  void ComprobarPalabraCorrecta(ArrayList<JTextField> fila,String palabra, String palabraResuelta) {
+		boolean isTrue=true;
+		char [] p=palabra.toCharArray();
+		System.out.println(p.length);
+		char [] pr=palabraResuelta.toCharArray();
+		System.out.println(pr.length);
+		for(int i=0;i<pr.length-1;i++) {
+			isTrue=true;
+			for(int j=0;j<p.length-1 && isTrue;j++) {
+				if(p[j]==pr[i]) {
+					fila.get(i).setBackground(Color.YELLOW);
+				}
+				if(p[i]==pr[i]) {
+					fila.get(i).setBackground(Color.GREEN);
+					isTrue=false;
+				}
+			}
+		}
+	}
+	
 
 }
