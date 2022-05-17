@@ -9,13 +9,13 @@ import javax.swing.JTextField;
 public class Metodos {
 	public static void DeshabilitarJTextField(ArrayList <JTextField> fila) {
 		for(int i=0;i<fila.size();i++) {
-			fila.get(i).setEnabled(false);
+			fila.get(i).setEditable(false);
 		}
 	}
 	
 	public static void HabilitarJTextField(ArrayList <JTextField> fila) {
 		for(int i=0;i<fila.size();i++) {
-			fila.get(i).setEnabled(true);
+			fila.get(i).setEditable(true);
 		}
 	}
 	
@@ -26,25 +26,48 @@ public class Metodos {
 		}
 		return palabra;
 	}
-	public static  void ComprobarPalabraCorrecta(ArrayList<JTextField> fila,String palabra, String palabraResuelta) {
+	public static  int ComprobarPalabraCorrecta(ArrayList<JTextField> fila,String palabra, String palabraResuelta,JLabel ERROR,int contadorGanar) {
+		int contador=0;
 		boolean isTrue=true;
-		char [] p=palabra.toCharArray();
-		System.out.println(p.length);
-		char [] pr=palabraResuelta.toCharArray();
-		System.out.println(pr.length);
-		for(int i=0;i<pr.length-1;i++) {
-			isTrue=true;
-			for(int j=0;j<p.length-1 && isTrue;j++) {
-				if(p[j]==pr[i]) {
-					fila.get(i).setBackground(Color.YELLOW);
-				}
-				if(p[i]==pr[i]) {
-					fila.get(i).setBackground(Color.GREEN);
-					isTrue=false;
+		if(palabra.length()!=5) {
+			ERROR.setText("Tiene que ser una palabra con 5 letras");
+		}
+		else {
+			ERROR.setText("");
+			char [] p=palabra.toCharArray();
+			char [] pr=palabraResuelta.toCharArray();
+			for(int i=0;i<pr.length;i++) {
+				isTrue=true;
+				for(int j=0;j<p.length && isTrue;j++) {
+					//Esta condicion sirve para que cuando una letra exista pero no este en la
+					//posicion correcta dentro de la palabra correcta se marque de color amarillo
+					if(p[i]==pr[j]) {
+						fila.get(i).setBackground(Color.YELLOW);
+					}
+					//Esta condicion sirve para  que cuando la letra este en la posicion correcta
+					//se marque de verder y se salga del bucle ya que no le hace falta verificar nada mas
+					if(p[i]==pr[i]) {
+						fila.get(i).setBackground(Color.GREEN);
+						contador++;
+						isTrue=false;
+					}
 				}
 			}
 		}
+		return contador;
 	}
+	
+	public static void PonerLetraGris(ArrayList<JTextField> fila) {
+		for(int i=0;i<5;i++) {
+			if(fila.get(i).getBackground()!=Color.YELLOW && fila.get(i).getBackground()!=Color.GREEN) {
+				fila.get(i).setBackground(new Color(205,205,205));
+			}
+		}
+	}
+	
+	public static void PonerLetraMayuscula(JTextField letra) {
+		letra.setText(letra.getText().toUpperCase());
+	} 
 	
 
 }
