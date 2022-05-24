@@ -3,6 +3,7 @@ package Wordle;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
@@ -65,9 +66,9 @@ public class Metodos {
 		}
 	}
 	
-	public static void PonerLetraMayuscula(JTextField letra) {
-		letra.setText(letra.getText().toUpperCase());
-	} 
+	public static void HasGanado(JButton btn_Enviar,JLabel Etiqueta_Ganar) {
+		Etiqueta_Ganar.setText("¡Has Ganado!");
+		btn_Enviar.setEnabled(false);
+	}
 	
-
 }
