@@ -13,16 +13,6 @@ public class KeyAdapter implements KeyListener{
 	public KeyAdapter(JTextField[][] textfields) {
 		this.ArrayTextFields=textfields;
 	}
-	
-	boolean EsCorrecto;
-	
-	public boolean isEsCorrecto() {
-		return EsCorrecto;
-	}
-
-	public void setEsCorrecto(boolean esCorrecto) {
-		EsCorrecto = esCorrecto;
-	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -66,6 +56,8 @@ public class KeyAdapter implements KeyListener{
 		if (!(min || may) || (textField.getText().length() > 0) ){
 	        e.consume();
 	    }
+		if(key==KeyEvent.VK_ENTER) {
+		}
 
 	}
 

@@ -58,6 +58,8 @@ public class Metodos {
 		return contador;
 	}
 	
+	
+	
 	public static void PonerLetraGris(ArrayList<JTextField> fila) {
 		for(int i=0;i<5;i++) {
 			if(fila.get(i).getBackground()!=Color.YELLOW && fila.get(i).getBackground()!=Color.GREEN) {
@@ -68,6 +70,11 @@ public class Metodos {
 	
 	public static void HasGanado(JButton btn_Enviar,JLabel Etiqueta_Ganar) {
 		Etiqueta_Ganar.setText("¡Has Ganado!");
+		btn_Enviar.setEnabled(false);
+	}
+	
+	public static void HasPerdido(JButton btn_Enviar,JLabel Etiqueta_Ganar) {
+		Etiqueta_Ganar.setText("¡Has Perdido!");
 		btn_Enviar.setEnabled(false);
 	}
 	
