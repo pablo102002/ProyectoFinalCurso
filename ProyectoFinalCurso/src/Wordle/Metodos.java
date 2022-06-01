@@ -37,6 +37,41 @@ public class Metodos {
 			ERROR.setText("");
 			char [] p=palabra.toCharArray();
 			char [] pr=palabraResuelta.toCharArray();
+			char Digit0=pr[0];
+			int contadorDigit0=0;
+			char Digit1=pr[1];
+			int contadorDigit1=0;
+			char Digit2=pr[2];
+			int contadorDigit2=0;
+			char Digit3=pr[3];
+			int contadorDigit3=0;
+			char Digit4=pr[4];
+			int contadorDigit4=0;
+			for(int x=0;x<5;x++) {
+				if(Digit0==pr[x]) {
+					contadorDigit0++;
+				}
+				if(Digit1==pr[x]) {
+					contadorDigit1++;
+				}
+				if(Digit2==pr[x]) {
+					contadorDigit2++;
+				}
+				if(Digit3==pr[x]) {
+					contadorDigit3++;
+				}
+				if(Digit4==pr[x]) {
+					contadorDigit4++;
+				}	
+			}
+			ArrayList<Integer> Contadores=new ArrayList<Integer>();
+			Contadores.add(contadorDigit0);
+			Contadores.add(contadorDigit1);
+			Contadores.add(contadorDigit2);
+			Contadores.add(contadorDigit3);
+			Contadores.add(contadorDigit4);
+			
+			
 			for(int i=0;i<pr.length;i++) {
 				isTrue=true;
 				for(int j=0;j<p.length && isTrue;j++) {
@@ -59,7 +94,6 @@ public class Metodos {
 	}
 	
 	
-	
 	public static void PonerLetraGris(ArrayList<JTextField> fila) {
 		for(int i=0;i<5;i++) {
 			if(fila.get(i).getBackground()!=Color.YELLOW && fila.get(i).getBackground()!=Color.GREEN) {
@@ -69,13 +103,32 @@ public class Metodos {
 	}
 	
 	public static void HasGanado(JButton btn_Enviar,JLabel Etiqueta_Ganar) {
+		Etiqueta_Ganar.setForeground(Color.GREEN);
 		Etiqueta_Ganar.setText("¡Has Ganado!");
 		btn_Enviar.setEnabled(false);
 	}
 	
 	public static void HasPerdido(JButton btn_Enviar,JLabel Etiqueta_Ganar) {
+		Etiqueta_Ganar.setForeground(Color.RED);
 		Etiqueta_Ganar.setText("¡Has Perdido!");
 		btn_Enviar.setEnabled(false);
 	}
-	
+
+	public static void ResetGame(ArrayList<JTextField> Array2d,JButton btn_Enviar,JLabel Etiqueta_Ganar) {
+		for(int i=0;i<Array2d.size();i++) {
+			Array2d.get(i).setBackground(Color.WHITE);
+			if(i<=4) {
+				Array2d.get(i).setEditable(true);
+			}
+			else {
+				Array2d.get(i).setEditable(false);
+				
+			}
+			Array2d.get(i).setText("");
+		}
+		btn_Enviar.setEnabled(true);
+		Etiqueta_Ganar.setText("");
+	}
+
 }
+

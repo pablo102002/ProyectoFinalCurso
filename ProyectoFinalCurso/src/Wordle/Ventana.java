@@ -28,8 +28,9 @@ public class Ventana {
 	JFrame frame;
 	private JTextField textField;
 	private JTextField textField_1;
-	private int contadorFila=0;
-	protected boolean pulsaEnter=false;
+	protected int contadorFila=0;
+	protected int ContadorVictoria=0;
+	protected int ContadorJuegoFinalizado=0;
 
 	/**
 	 * Launch the application.
@@ -70,7 +71,7 @@ public class Ventana {
 		frame.getContentPane().add(panel_Juego);
 		panel_Juego.setLayout(new GridLayout(6, 5, 10, 10));
 		
-		JButton btn_Enviar = new JButton("Enviar");
+		JButton btn_Enviar = new JButton("Send");
 		btn_Enviar.setBounds(255, 562, 105, 27);
 		frame.getContentPane().add(btn_Enviar);
 		
@@ -86,6 +87,14 @@ public class Ventana {
 		Etiqueta_Ganar.setBounds(136, 647, 184, 55);
 		frame.getContentPane().add(Etiqueta_Ganar);
 		
+		JButton btn_Reset = new JButton("Reset");
+		btn_Reset.setBounds(476, 562, 105, 27);
+		frame.getContentPane().add(btn_Reset);
+		
+		JLabel letraOculta = new JLabel("");
+		letraOculta.setBounds(24, 135, 60, 17);
+		frame.getContentPane().add(letraOculta);
+		
 		/*
 		 * ArrayList la cual contiene las posibles palabras a adivinar
 		 */
@@ -100,11 +109,43 @@ public class Ventana {
 		AdivinarPalabra.add("LIMON");
 		AdivinarPalabra.add("RATON");
 		AdivinarPalabra.add("SITIO");
+		AdivinarPalabra.add("JUGAR");
+		AdivinarPalabra.add("JABON");
+		AdivinarPalabra.add("CHICA");
+		AdivinarPalabra.add("SALTA");
+		AdivinarPalabra.add("VAPOR");
+		AdivinarPalabra.add("PESTO");
+		AdivinarPalabra.add("NINJA");
+		AdivinarPalabra.add("NOCHE");
+		AdivinarPalabra.add("MIXTO");
+		AdivinarPalabra.add("LLENO");
 		
+		/*
+		 * Aqui sacamos la palabra secreta mediante un numero random
+		 */
+		ArrayList<String> PalabraSecreta = new ArrayList<String>();
 		int numero = (int)(Math.random()*AdivinarPalabra.size()-1+1);
-		final String palabraResuelta=AdivinarPalabra.get(numero);
-		System.out.println(palabraResuelta);
+		PalabraSecreta.add(AdivinarPalabra.get(numero));
+		AdivinarPalabra.remove(numero);
+		numero = (int)(Math.random()*AdivinarPalabra.size()-1+1);
+		PalabraSecreta.add(AdivinarPalabra.get(numero));
+		AdivinarPalabra.remove(numero);
+		numero = (int)(Math.random()*AdivinarPalabra.size()-1+1);
+		PalabraSecreta.add(AdivinarPalabra.get(numero));
+		numero = (int)(Math.random()*AdivinarPalabra.size()-1+1);
+		PalabraSecreta.add(AdivinarPalabra.get(numero));
+		numero = (int)(Math.random()*AdivinarPalabra.size()-1+1);
+		PalabraSecreta.add(AdivinarPalabra.get(numero));
+		System.out.println(PalabraSecreta.get(0));
+		System.out.println(PalabraSecreta.get(1));
+		System.out.println(PalabraSecreta.get(2));
+		System.out.println(PalabraSecreta.get(3));
+		System.out.println(PalabraSecreta.get(4));
 		
+		
+		/*
+		 * Este ArrayList permite conprobar si una palabra es coherente
+		 */
 
 		ArrayList<String> diccionario = new ArrayList<>();
 		try (BufferedReader reader = new BufferedReader(new FileReader("./files/5letras.txt"))) {
@@ -121,6 +162,7 @@ public class Ventana {
 		/*
 		 * Creamos ArrayList para que sea mas facil manejar las paabras
 		 */
+		ArrayList<JTextField> Array2d = new ArrayList<JTextField>();
 		ArrayList<JTextField> fila1 = new ArrayList<JTextField>();
 		ArrayList<JTextField> fila2 = new ArrayList<JTextField>();
 		ArrayList<JTextField> fila3 = new ArrayList<JTextField>();
@@ -141,11 +183,13 @@ public class Ventana {
 					ArrayWordle[i][j] = new JTextField();
 					ArrayWordle[i][j].setEditable(false);
 				}
+				ArrayWordle[i][j].setBackground(Color.WHITE);
 				ArrayWordle[i][j].setName(i+" "+j);
 				ArrayWordle[i][j].setHorizontalAlignment(SwingConstants.CENTER);
 				ArrayWordle[i][j].setFont(new Font("Dialog", Font.BOLD, 30));
 				panel_Juego.add(ArrayWordle[i][j]);
 				ArrayWordle[i][j].addKeyListener(KeyL);
+				Array2d.add(ArrayWordle[i][j]);
 
 				switch(i) {
 				case 0: 
@@ -181,13 +225,14 @@ public class Ventana {
 				String palabraFila5="";
 				String palabraFila6="";
 
-				switch (contadorFila) 
-				{
+				switch (contadorFila) {
 				case 0: 
 					palabraFila1=Metodos.CrearPalabraFila(fila1, palabraFila1);
 					if(diccionario.contains(palabraFila1)) {
-						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila1,palabraFila1,palabraResuelta,Etiqueta_ErrorLetra,contadorGanar);
+						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila1,palabraFila1,PalabraSecreta.get(ContadorJuegoFinalizado),Etiqueta_ErrorLetra,contadorGanar);
 						if(contadorGanar==5) {
+							ContadorJuegoFinalizado++;
+							ContadorVictoria++;
 							Metodos.DeshabilitarJTextField(fila1);
 							Metodos.PonerLetraGris(fila1);
 							Metodos.HasGanado(btn_Enviar, Etiqueta_Ganar);
@@ -209,8 +254,10 @@ public class Ventana {
 				case 1: 
 					palabraFila2=Metodos.CrearPalabraFila(fila2, palabraFila2);
 					if(diccionario.contains(palabraFila2)) {
-						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila2,palabraFila2,palabraResuelta,Etiqueta_ErrorLetra,contadorGanar);
+						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila2,palabraFila2,PalabraSecreta.get(ContadorJuegoFinalizado),Etiqueta_ErrorLetra,contadorGanar);
 						if(contadorGanar==5) {
+							ContadorJuegoFinalizado++;
+							ContadorVictoria++;
 							Metodos.DeshabilitarJTextField(fila2);
 							Metodos.PonerLetraGris(fila2);
 							Metodos.HasGanado(btn_Enviar, Etiqueta_Ganar);
@@ -231,8 +278,10 @@ public class Ventana {
 				case 2:  
 					palabraFila3=Metodos.CrearPalabraFila(fila3, palabraFila3);
 					if(diccionario.contains(palabraFila3)) {
-						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila3,palabraFila3,palabraResuelta,Etiqueta_ErrorLetra,contadorGanar);
+						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila3,palabraFila3,PalabraSecreta.get(ContadorJuegoFinalizado),Etiqueta_ErrorLetra,contadorGanar);
 						if(contadorGanar==5) {
+							ContadorJuegoFinalizado++;
+							ContadorVictoria++;
 							Metodos.DeshabilitarJTextField(fila3);
 							Metodos.PonerLetraGris(fila3);
 							Metodos.HasGanado(btn_Enviar, Etiqueta_Ganar);
@@ -254,9 +303,11 @@ public class Ventana {
 				case 3:
 					palabraFila4=Metodos.CrearPalabraFila(fila4, palabraFila4);
 					if(diccionario.contains(palabraFila4)) {
-						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila4,palabraFila4,palabraResuelta,Etiqueta_ErrorLetra,contadorGanar);
+						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila4,palabraFila4,PalabraSecreta.get(ContadorJuegoFinalizado),Etiqueta_ErrorLetra,contadorGanar);
 
 						if(contadorGanar==5) {
+							ContadorJuegoFinalizado++;
+							ContadorVictoria++;
 							Metodos.DeshabilitarJTextField(fila4);
 							Metodos.PonerLetraGris(fila4);
 							Metodos.HasGanado(btn_Enviar, Etiqueta_Ganar);
@@ -272,14 +323,15 @@ public class Ventana {
 					}
 					else {
 						Etiqueta_ErrorLetra.setText("La palabra no existe");
-					}
-					;
+					};
 					break;
 				case 4: 
 					palabraFila5=Metodos.CrearPalabraFila(fila5, palabraFila5);
 					if(diccionario.contains(palabraFila5)) {
-						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila5,palabraFila5,palabraResuelta,Etiqueta_ErrorLetra,contadorGanar);
+						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila5,palabraFila5,PalabraSecreta.get(ContadorJuegoFinalizado),Etiqueta_ErrorLetra,contadorGanar);
 						if(contadorGanar==5) {
+							ContadorJuegoFinalizado++;
+							ContadorVictoria++;
 							Metodos.DeshabilitarJTextField(fila5);
 							Metodos.PonerLetraGris(fila5);
 							Metodos.HasGanado(btn_Enviar, Etiqueta_Ganar);
@@ -301,9 +353,11 @@ public class Ventana {
 				case 5: 
 					palabraFila6=Metodos.CrearPalabraFila(fila6, palabraFila6);
 					if(diccionario.contains(palabraFila6)) {
-						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila6,palabraFila6,palabraResuelta,Etiqueta_ErrorLetra,contadorGanar);
+						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila6,palabraFila6,PalabraSecreta.get(ContadorJuegoFinalizado),Etiqueta_ErrorLetra,contadorGanar);
 						if(contadorGanar==5) {
-							Metodos.DeshabilitarJTextField(fila6	);
+							ContadorJuegoFinalizado++;
+							ContadorVictoria++;
+							Metodos.DeshabilitarJTextField(fila6);
 							Metodos.PonerLetraGris(fila6);
 							Metodos.HasGanado(btn_Enviar, Etiqueta_Ganar);
 						}
@@ -339,9 +393,11 @@ public class Ventana {
 					palabraFila1=Metodos.CrearPalabraFila(fila1, palabraFila1);
 					if(diccionario.contains(palabraFila1)) {
 						System.out.println(palabraFila1);
-						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila1,palabraFila1,palabraResuelta,Etiqueta_ErrorLetra,contadorGanar);
+						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila1,palabraFila1,PalabraSecreta.get(ContadorJuegoFinalizado),Etiqueta_ErrorLetra,contadorGanar);
 						System.out.println("Cont: "+contadorGanar);
 						if(contadorGanar==5) {
+							ContadorJuegoFinalizado++;
+							ContadorVictoria++;
 							Metodos.DeshabilitarJTextField(fila1);
 							Metodos.PonerLetraGris(fila1);
 							Metodos.HasGanado(btn_Enviar, Etiqueta_Ganar);
@@ -363,7 +419,7 @@ public class Ventana {
 		});
 		
 		/*
-		 * LISTENER PARA LA EL ENTER FILA1
+		 * LISTENER PARA LA EL ENTER FILA2
 		 */
 		
 		fila2.get(4).addKeyListener(new KeyAdapter(ArrayWordle) {
@@ -375,8 +431,10 @@ public class Ventana {
 					String palabraFila2="";
 					palabraFila2=Metodos.CrearPalabraFila(fila2, palabraFila2);
 					if(diccionario.contains(palabraFila2)) {
-						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila2,palabraFila2,palabraResuelta,Etiqueta_ErrorLetra,contadorGanar);
+						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila2,palabraFila2,PalabraSecreta.get(ContadorJuegoFinalizado),Etiqueta_ErrorLetra,contadorGanar);
 						if(contadorGanar==5) {
+							ContadorJuegoFinalizado++;
+							ContadorVictoria++;
 							Metodos.DeshabilitarJTextField(fila1);
 							Metodos.PonerLetraGris(fila1);
 							Metodos.HasGanado(btn_Enviar, Etiqueta_Ganar);
@@ -398,7 +456,7 @@ public class Ventana {
 		});
 
 		/*
-		 * LISTENER PARA LA EL ENTER FILA1
+		 * LISTENER PARA LA EL ENTER FILA3
 		 */
 
 		fila3.get(4).addKeyListener(new KeyAdapter(ArrayWordle) {
@@ -410,8 +468,10 @@ public class Ventana {
 					String palabraFila3="";
 					palabraFila3=Metodos.CrearPalabraFila(fila3, palabraFila3);
 					if(diccionario.contains(palabraFila3)) {
-						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila3,palabraFila3,palabraResuelta,Etiqueta_ErrorLetra,contadorGanar);
+						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila3,palabraFila3,PalabraSecreta.get(ContadorJuegoFinalizado),Etiqueta_ErrorLetra,contadorGanar);
 						if(contadorGanar==5) {
+							ContadorJuegoFinalizado++;
+							ContadorVictoria++;
 							Metodos.DeshabilitarJTextField(fila3);
 							Metodos.PonerLetraGris(fila3);
 							Metodos.HasGanado(btn_Enviar, Etiqueta_Ganar);
@@ -434,7 +494,7 @@ public class Ventana {
 		});
 		
 		/*
-		 * LISTENER PARA LA EL ENTER FILA1
+		 * LISTENER PARA LA EL ENTER FILA4
 		 */
 		
 		fila4.get(4).addKeyListener(new KeyAdapter(ArrayWordle) {
@@ -446,8 +506,10 @@ public class Ventana {
 					String palabraFila4="";
 					palabraFila4=Metodos.CrearPalabraFila(fila4, palabraFila4);
 					if(diccionario.contains(palabraFila4)) {
-						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila4,palabraFila4,palabraResuelta,Etiqueta_ErrorLetra,contadorGanar);
+						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila4,palabraFila4,PalabraSecreta.get(ContadorJuegoFinalizado),Etiqueta_ErrorLetra,contadorGanar);
 						if(contadorGanar==5) {
+							ContadorJuegoFinalizado++;
+							ContadorVictoria++;
 							Metodos.DeshabilitarJTextField(fila4);
 							Metodos.PonerLetraGris(fila4);
 							Metodos.HasGanado(btn_Enviar, Etiqueta_Ganar);
@@ -463,15 +525,15 @@ public class Ventana {
 
 
 					}
+					else {
+						Etiqueta_ErrorLetra.setText("La palabra no existe");
+					}	
 				}
-				else {
-					Etiqueta_ErrorLetra.setText("La palabra no existe");
-				}	
 			}
 		});
 		
 		/*
-		 * LISTENER PARA LA EL ENTER FILA1
+		 * LISTENER PARA LA EL ENTER FILA5
 		 */
 		
 		fila5.get(4).addKeyListener(new KeyAdapter(ArrayWordle) {
@@ -483,8 +545,10 @@ public class Ventana {
 					String palabraFila5="";
 					palabraFila5=Metodos.CrearPalabraFila(fila5, palabraFila5);
 					if(diccionario.contains(palabraFila5)) {
-						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila5,palabraFila5,palabraResuelta,Etiqueta_ErrorLetra,contadorGanar);
+						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila5,palabraFila5,PalabraSecreta.get(ContadorJuegoFinalizado),Etiqueta_ErrorLetra,contadorGanar);
 						if(contadorGanar==5) {
+							ContadorJuegoFinalizado++;
+							ContadorVictoria++;
 							Metodos.DeshabilitarJTextField(fila5);
 							Metodos.PonerLetraGris(fila5);
 							Metodos.HasGanado(btn_Enviar, Etiqueta_Ganar);
@@ -500,15 +564,15 @@ public class Ventana {
 
 
 					}
+					else {
+						Etiqueta_ErrorLetra.setText("La palabra no existe");
+					}	
 				}
-				else {
-					Etiqueta_ErrorLetra.setText("La palabra no existe");
-				}	
 			}
 		});
 
 		/*
-		 * LISTENER PARA LA EL ENTER FILA1
+		 * LISTENER PARA LA EL ENTER FILA6
 		 */
 		
 		fila6.get(4).addKeyListener(new KeyAdapter(ArrayWordle) {
@@ -520,8 +584,10 @@ public class Ventana {
 					String palabraFila6="";
 					palabraFila6=Metodos.CrearPalabraFila(fila6, palabraFila6);
 					if(diccionario.contains(palabraFila6)) {
-						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila6,palabraFila6,palabraResuelta,Etiqueta_ErrorLetra,contadorGanar);
+						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila6,palabraFila6,PalabraSecreta.get(ContadorJuegoFinalizado),Etiqueta_ErrorLetra,contadorGanar);
 						if(contadorGanar==5) {
+							ContadorJuegoFinalizado++;
+							ContadorVictoria++;
 							Metodos.DeshabilitarJTextField(fila6);
 							Metodos.PonerLetraGris(fila6);
 							Metodos.HasGanado(btn_Enviar, Etiqueta_Ganar);
@@ -536,10 +602,22 @@ public class Ventana {
 
 
 					}
+					else {
+						Etiqueta_ErrorLetra.setText("La palabra no existe");
+					}	
 				}
-				else {
-					Etiqueta_ErrorLetra.setText("La palabra no existe");
-				}	
+			}
+		});
+		
+		/*
+		 * Esta funcion sirve para resetear el juego y volver a jugar
+		 */
+		
+		
+		btn_Reset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println(ContadorVictoria);
+				Metodos.ResetGame(Array2d, btn_Enviar, Etiqueta_Ganar);
 			}
 		});
 		
