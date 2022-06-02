@@ -6,11 +6,11 @@ import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 
-public class KeyAdapter implements KeyListener{
+public class KeyAdapterWindow implements KeyListener{
 
 	JTextField[][] ArrayTextFields;
 	
-	public KeyAdapter(JTextField[][] textfields) {
+	public KeyAdapterWindow(JTextField[][] textfields) {
 		this.ArrayTextFields=textfields;
 	}
 
@@ -38,9 +38,6 @@ public class KeyAdapter implements KeyListener{
 			this.ArrayTextFields[x][y-1].requestFocus();
 		}
 		
-		if(key==KeyEvent.VK_ENTER && y==4) {
-			
-		}
 	}
 
 	@Override
@@ -56,9 +53,6 @@ public class KeyAdapter implements KeyListener{
 		if (!(min || may) || (textField.getText().length() > 0) ){
 	        e.consume();
 	    }
-		if(key==KeyEvent.VK_ENTER) {
-		}
-
 	}
 
 }

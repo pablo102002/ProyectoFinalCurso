@@ -28,9 +28,9 @@ public class Ventana {
 	JFrame frame;
 	private JTextField textField;
 	private JTextField textField_1;
-	protected int contadorFila=0;
-	protected int ContadorVictoria=0;
-	protected int ContadorJuegoFinalizado=0;
+	protected int ContRow=0;
+	protected int ContVictory=0;
+	protected int ContGameOver=0;
 
 	/**
 	 * Launch the application.
@@ -60,13 +60,13 @@ public class Ventana {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.getContentPane().setBackground(new Color(255, 255, 255));
+		frame.getContentPane().setBackground(new Color(204, 255, 204));
 		frame.setBounds(100, 100, 650, 850);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JPanel panel_Juego = new JPanel();
-		panel_Juego.setBackground(new Color(255, 255, 255));
+		panel_Juego.setBackground(new Color(204, 255, 204));
 		panel_Juego.setBounds(123, 98, 375, 422);
 		frame.getContentPane().add(panel_Juego);
 		panel_Juego.setLayout(new GridLayout(6, 5, 10, 10));
@@ -75,16 +75,16 @@ public class Ventana {
 		btn_Enviar.setBounds(255, 562, 105, 27);
 		frame.getContentPane().add(btn_Enviar);
 		
-		JLabel Etiqueta_ErrorLetra = new JLabel("");
-		Etiqueta_ErrorLetra.setFont(new Font("Dialog", Font.BOLD, 20));
-		Etiqueta_ErrorLetra.setForeground(Color.RED);
-		Etiqueta_ErrorLetra.setBounds(45, 601, 408, 45);
-		frame.getContentPane().add(Etiqueta_ErrorLetra);
+		JLabel lbl_ErrorLetter = new JLabel("");
+		lbl_ErrorLetter.setFont(new Font("Dialog", Font.BOLD, 20));
+		lbl_ErrorLetter.setForeground(Color.RED);
+		lbl_ErrorLetter.setBounds(45, 601, 408, 45);
+		frame.getContentPane().add(lbl_ErrorLetter);
 		
 		JLabel Etiqueta_Ganar = new JLabel("");
 		Etiqueta_Ganar.setFont(new Font("Dialog", Font.BOLD, 26));
 		Etiqueta_Ganar.setForeground(Color.GREEN);
-		Etiqueta_Ganar.setBounds(136, 647, 184, 55);
+		Etiqueta_Ganar.setBounds(136, 647, 375, 55);
 		frame.getContentPane().add(Etiqueta_Ganar);
 		
 		JButton btn_Reset = new JButton("Reset");
@@ -92,66 +92,67 @@ public class Ventana {
 		frame.getContentPane().add(btn_Reset);
 		
 		JLabel letraOculta = new JLabel("");
-		letraOculta.setBounds(24, 135, 60, 17);
+		letraOculta.setFont(new Font("Dialog", Font.BOLD, 26));
+		letraOculta.setBounds(26, 714, 580, 91);
 		frame.getContentPane().add(letraOculta);
 		
 		/*
 		 * ArrayList la cual contiene las posibles palabras a adivinar
 		 */
-		ArrayList<String> AdivinarPalabra = new ArrayList<String>();
-		AdivinarPalabra.add("HUESO");
-		AdivinarPalabra.add("TIMAR");
-		AdivinarPalabra.add("MIRAR");
-		AdivinarPalabra.add("HACER");
-		AdivinarPalabra.add("ASPAS");
-		AdivinarPalabra.add("TRAES");
-		AdivinarPalabra.add("OSTRA");
-		AdivinarPalabra.add("LIMON");
-		AdivinarPalabra.add("RATON");
-		AdivinarPalabra.add("SITIO");
-		AdivinarPalabra.add("JUGAR");
-		AdivinarPalabra.add("JABON");
-		AdivinarPalabra.add("CHICA");
-		AdivinarPalabra.add("SALTA");
-		AdivinarPalabra.add("VAPOR");
-		AdivinarPalabra.add("PESTO");
-		AdivinarPalabra.add("NINJA");
-		AdivinarPalabra.add("NOCHE");
-		AdivinarPalabra.add("MIXTO");
-		AdivinarPalabra.add("LLENO");
+		ArrayList<String> GuessWord = new ArrayList<String>();
+		GuessWord.add("HUESO");
+		GuessWord.add("TIMAR");
+		GuessWord.add("MIRAS");
+		GuessWord.add("HACER");
+		GuessWord.add("FLIPO");
+		GuessWord.add("TRAES");
+		GuessWord.add("OSTRA");
+		GuessWord.add("LIMON");
+		GuessWord.add("RATON");
+		GuessWord.add("PADRE");
+		GuessWord.add("JUGAR");
+		GuessWord.add("JABON");
+		GuessWord.add("CHICA");
+		GuessWord.add("SILBA");
+		GuessWord.add("VAPOR");
+		GuessWord.add("PESTO");
+		GuessWord.add("NINJA");
+		GuessWord.add("NOCHE");
+		GuessWord.add("MIXTO");
+		GuessWord.add("LUEGO");
 		
 		/*
 		 * Aqui sacamos la palabra secreta mediante un numero random
 		 */
-		ArrayList<String> PalabraSecreta = new ArrayList<String>();
-		int numero = (int)(Math.random()*AdivinarPalabra.size()-1+1);
-		PalabraSecreta.add(AdivinarPalabra.get(numero));
-		AdivinarPalabra.remove(numero);
-		numero = (int)(Math.random()*AdivinarPalabra.size()-1+1);
-		PalabraSecreta.add(AdivinarPalabra.get(numero));
-		AdivinarPalabra.remove(numero);
-		numero = (int)(Math.random()*AdivinarPalabra.size()-1+1);
-		PalabraSecreta.add(AdivinarPalabra.get(numero));
-		numero = (int)(Math.random()*AdivinarPalabra.size()-1+1);
-		PalabraSecreta.add(AdivinarPalabra.get(numero));
-		numero = (int)(Math.random()*AdivinarPalabra.size()-1+1);
-		PalabraSecreta.add(AdivinarPalabra.get(numero));
-		System.out.println(PalabraSecreta.get(0));
-		System.out.println(PalabraSecreta.get(1));
-		System.out.println(PalabraSecreta.get(2));
-		System.out.println(PalabraSecreta.get(3));
-		System.out.println(PalabraSecreta.get(4));
+		ArrayList<String> SecretWord = new ArrayList<String>();
+		int number = (int)(Math.random()*GuessWord.size()-1+1);
+		SecretWord.add(GuessWord.get(number));
+		GuessWord.remove(number);
+		number = (int)(Math.random()*GuessWord.size()-1+1);
+		SecretWord.add(GuessWord.get(number));
+		GuessWord.remove(number);
+		number = (int)(Math.random()*GuessWord.size()-1+1);
+		SecretWord.add(GuessWord.get(number));
+		number = (int)(Math.random()*GuessWord.size()-1+1);
+		SecretWord.add(GuessWord.get(number));
+		number = (int)(Math.random()*GuessWord.size()-1+1);
+		SecretWord.add(GuessWord.get(number));
+		System.out.println(SecretWord.get(0));
+		System.out.println(SecretWord.get(1));
+		System.out.println(SecretWord.get(2));
+		System.out.println(SecretWord.get(3));
+		System.out.println(SecretWord.get(4));
 		
 		
 		/*
 		 * Este ArrayList permite conprobar si una palabra es coherente
 		 */
 
-		ArrayList<String> diccionario = new ArrayList<>();
+		ArrayList<String> dictionary = new ArrayList<>();
 		try (BufferedReader reader = new BufferedReader(new FileReader("./files/5letras.txt"))) {
 
 			while (reader.ready()) {
-				diccionario.add(reader.readLine());
+				dictionary.add(reader.readLine());
 			}
 		}
 		//Controlando excepciones
@@ -163,16 +164,16 @@ public class Ventana {
 		 * Creamos ArrayList para que sea mas facil manejar las paabras
 		 */
 		ArrayList<JTextField> Array2d = new ArrayList<JTextField>();
-		ArrayList<JTextField> fila1 = new ArrayList<JTextField>();
-		ArrayList<JTextField> fila2 = new ArrayList<JTextField>();
-		ArrayList<JTextField> fila3 = new ArrayList<JTextField>();
-		ArrayList<JTextField> fila4 = new ArrayList<JTextField>();
-		ArrayList<JTextField> fila5 = new ArrayList<JTextField>();
-		ArrayList<JTextField> fila6 = new ArrayList<JTextField>();
+		ArrayList<JTextField> row1 = new ArrayList<JTextField>();
+		ArrayList<JTextField> row2 = new ArrayList<JTextField>();
+		ArrayList<JTextField> row3 = new ArrayList<JTextField>();
+		ArrayList<JTextField> row4 = new ArrayList<JTextField>();
+		ArrayList<JTextField> row5 = new ArrayList<JTextField>();
+		ArrayList<JTextField> row6 = new ArrayList<JTextField>();
 
 		//Crear los JTexfields mediante un bucle
 		JTextField[][] ArrayWordle=new JTextField[6][5];
-		KeyListener KeyL=new KeyAdapter(ArrayWordle);
+		KeyListener KeyL=new KeyAdapterWindow(ArrayWordle);
 
 		for(int i=0;i<6;i++) {
 			for(int j=0;j<5;j++) {
@@ -193,22 +194,22 @@ public class Ventana {
 
 				switch(i) {
 				case 0: 
-					fila1.add(ArrayWordle[i][j]);
+					row1.add(ArrayWordle[i][j]);
 					break;
 				case 1: 
-					fila2.add(ArrayWordle[i][j]);
+					row2.add(ArrayWordle[i][j]);
 					break;
 				case 2:
-					fila3.add(ArrayWordle[i][j]);
+					row3.add(ArrayWordle[i][j]);
 					break;
 				case 3: 
-					fila4.add(ArrayWordle[i][j]);
+					row4.add(ArrayWordle[i][j]);
 					break;
 				case 4: 
-					fila5.add(ArrayWordle[i][j]);
+					row5.add(ArrayWordle[i][j]);
 					break;
 				case 5: 
-					fila6.add(ArrayWordle[i][j]);
+					row6.add(ArrayWordle[i][j]);
 					break;
 				}
 
@@ -218,238 +219,278 @@ public class Ventana {
 		btn_Enviar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int contadorGanar=0;
-				String palabraFila1="";
-				String palabraFila2="";
-				String palabraFila3="";
-				String palabraFila4="";
-				String palabraFila5="";
-				String palabraFila6="";
 
-				switch (contadorFila) {
+				switch (ContRow) {
 				case 0: 
-					palabraFila1=Metodos.CrearPalabraFila(fila1, palabraFila1);
-					if(diccionario.contains(palabraFila1)) {
-						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila1,palabraFila1,PalabraSecreta.get(ContadorJuegoFinalizado),Etiqueta_ErrorLetra,contadorGanar);
-						if(contadorGanar==5) {
-							ContadorJuegoFinalizado++;
-							ContadorVictoria++;
-							Metodos.DeshabilitarJTextField(fila1);
-							Metodos.PonerLetraGris(fila1);
-							Metodos.HasGanado(btn_Enviar, Etiqueta_Ganar);
-						}
-						else if(palabraFila1.length()==5) {
-							Metodos.PonerLetraGris(fila1);
-							contadorGanar=0;
-							contadorFila++;
-							Metodos.DeshabilitarJTextField(fila1);
-							Metodos.HabilitarJTextField(fila2);
-							fila2.get(0).requestFocus();
-						}
+					String rowWord1=Methods.CreateRowWord(row1);
+					if(rowWord1.length()!=5) {
+						lbl_ErrorLetter.setText("It has to be a word with 5 letters");
 					}
 					else {
-						Etiqueta_ErrorLetra.setText("La palabra no existe");
+						lbl_ErrorLetter.setText("");
+						if(dictionary.contains(rowWord1)) {
+							contadorGanar=Methods.CheckCorrectWord(row1,rowWord1,SecretWord.get(ContGameOver),contadorGanar);
+							if(contadorGanar==5) {
+								ContGameOver++;
+								ContVictory++;
+								Methods.DisableJTextField(row1);
+								Methods.PutGrayLetter(row1);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+							}
+							else if(rowWord1.length()==5) {
+								Methods.PutGrayLetter(row1);
+								contadorGanar=0;
+								ContRow++;
+								Methods.DisableJTextField(row1);
+								Methods.EnableJTextField(row2);
+								row2.get(0).requestFocus();
+							}
+						}
+						else {
+							lbl_ErrorLetter.setText("The word doesn't exist");
+						}
 					}
 					;
 					break;
 				case 1: 
-					palabraFila2=Metodos.CrearPalabraFila(fila2, palabraFila2);
-					if(diccionario.contains(palabraFila2)) {
-						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila2,palabraFila2,PalabraSecreta.get(ContadorJuegoFinalizado),Etiqueta_ErrorLetra,contadorGanar);
-						if(contadorGanar==5) {
-							ContadorJuegoFinalizado++;
-							ContadorVictoria++;
-							Metodos.DeshabilitarJTextField(fila2);
-							Metodos.PonerLetraGris(fila2);
-							Metodos.HasGanado(btn_Enviar, Etiqueta_Ganar);
-						}
-						else if(palabraFila2.length()==5) {
-							Metodos.PonerLetraGris(fila2);
-							contadorGanar=0;
-							contadorFila++;
-							Metodos.DeshabilitarJTextField(fila2);
-							Metodos.HabilitarJTextField(fila3);
-							fila3.get(0).requestFocus();
-						}
+					String rowWord2=Methods.CreateRowWord(row2);
+					if(rowWord2.length()!=5) {
+						lbl_ErrorLetter.setText("It has to be a word with 5 letters");
 					}
 					else {
-						Etiqueta_ErrorLetra.setText("La palabra no existe");
+						lbl_ErrorLetter.setText("");
+						if(dictionary.contains(rowWord2)) {
+							contadorGanar=Methods.CheckCorrectWord(row2,rowWord2,SecretWord.get(ContGameOver),contadorGanar);
+							if(contadorGanar==5) {
+								ContGameOver++;
+								ContVictory++;
+								Methods.DisableJTextField(row2);
+								Methods.PutGrayLetter(row2);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+							}
+							else if(rowWord2.length()==5) {
+								Methods.PutGrayLetter(row2);
+								contadorGanar=0;
+								ContRow++;
+								Methods.DisableJTextField(row2);
+								Methods.EnableJTextField(row3);
+								row3.get(0).requestFocus();
+							}
+						}
+						else {
+							lbl_ErrorLetter.setText("The word doesn't exist");
+						}
 					};
 					break;
 				case 2:  
-					palabraFila3=Metodos.CrearPalabraFila(fila3, palabraFila3);
-					if(diccionario.contains(palabraFila3)) {
-						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila3,palabraFila3,PalabraSecreta.get(ContadorJuegoFinalizado),Etiqueta_ErrorLetra,contadorGanar);
-						if(contadorGanar==5) {
-							ContadorJuegoFinalizado++;
-							ContadorVictoria++;
-							Metodos.DeshabilitarJTextField(fila3);
-							Metodos.PonerLetraGris(fila3);
-							Metodos.HasGanado(btn_Enviar, Etiqueta_Ganar);
-						}
-						else if(palabraFila3.length()==5) {
-							Metodos.PonerLetraGris(fila3);
-							contadorGanar=0;
-							contadorFila++;
-							Metodos.DeshabilitarJTextField(fila3);
-							Metodos.HabilitarJTextField(fila4);
-							fila4.get(0).requestFocus();
-						}
+					String rowWord3=Methods.CreateRowWord(row3);
+					if(rowWord3.length()!=5) {
+						lbl_ErrorLetter.setText("It has to be a word with 5 letters");
 					}
 					else {
-						Etiqueta_ErrorLetra.setText("La palabra no existe");
+						lbl_ErrorLetter.setText("");
+						if(dictionary.contains(rowWord3)) {
+							contadorGanar=Methods.CheckCorrectWord(row3,rowWord3,SecretWord.get(ContGameOver),contadorGanar);
+							if(contadorGanar==5) {
+								ContGameOver++;
+								ContVictory++;
+								Methods.DisableJTextField(row3);
+								Methods.PutGrayLetter(row3);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+							}
+							else if(rowWord3.length()==5) {
+								Methods.PutGrayLetter(row3);
+								contadorGanar=0;
+								ContRow++;
+								Methods.DisableJTextField(row3);
+								Methods.EnableJTextField(row4);
+								row4.get(0).requestFocus();
+							}
+						}
+						else {
+							lbl_ErrorLetter.setText("The word doesn't exist");
+						}
 					}
 					;
 					break;
 				case 3:
-					palabraFila4=Metodos.CrearPalabraFila(fila4, palabraFila4);
-					if(diccionario.contains(palabraFila4)) {
-						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila4,palabraFila4,PalabraSecreta.get(ContadorJuegoFinalizado),Etiqueta_ErrorLetra,contadorGanar);
-
-						if(contadorGanar==5) {
-							ContadorJuegoFinalizado++;
-							ContadorVictoria++;
-							Metodos.DeshabilitarJTextField(fila4);
-							Metodos.PonerLetraGris(fila4);
-							Metodos.HasGanado(btn_Enviar, Etiqueta_Ganar);
-						}
-						else if(palabraFila4.length()==5) {
-							Metodos.PonerLetraGris(fila4);
-							contadorGanar=0;
-							contadorFila++;
-							Metodos.DeshabilitarJTextField(fila4);
-							Metodos.HabilitarJTextField(fila5);
-							fila5.get(0).requestFocus();
-						}
+					String rowWord4=Methods.CreateRowWord(row4);
+					if(rowWord4.length()!=5) {
+						lbl_ErrorLetter.setText("It has to be a word with 5 letters");
 					}
 					else {
-						Etiqueta_ErrorLetra.setText("La palabra no existe");
+						lbl_ErrorLetter.setText("");
+						if(dictionary.contains(rowWord4)) {
+							contadorGanar=Methods.CheckCorrectWord(row4,rowWord4,SecretWord.get(ContGameOver),contadorGanar);
+
+							if(contadorGanar==5) {
+								ContGameOver++;
+								ContVictory++;
+								Methods.DisableJTextField(row4);
+								Methods.PutGrayLetter(row4);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+							}
+							else if(rowWord4.length()==5) {
+								Methods.PutGrayLetter(row4);
+								contadorGanar=0;
+								ContRow++;
+								Methods.DisableJTextField(row4);
+								Methods.EnableJTextField(row5);
+								row5.get(0).requestFocus();
+							}
+						}
+						else {
+							lbl_ErrorLetter.setText("The word doesn't exist");
+						}
 					};
 					break;
 				case 4: 
-					palabraFila5=Metodos.CrearPalabraFila(fila5, palabraFila5);
-					if(diccionario.contains(palabraFila5)) {
-						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila5,palabraFila5,PalabraSecreta.get(ContadorJuegoFinalizado),Etiqueta_ErrorLetra,contadorGanar);
-						if(contadorGanar==5) {
-							ContadorJuegoFinalizado++;
-							ContadorVictoria++;
-							Metodos.DeshabilitarJTextField(fila5);
-							Metodos.PonerLetraGris(fila5);
-							Metodos.HasGanado(btn_Enviar, Etiqueta_Ganar);
-						}
-						else if(palabraFila5.length()==5) {
-							Metodos.PonerLetraGris(fila5);
-							contadorGanar=0;
-							contadorFila++;
-							Metodos.DeshabilitarJTextField(fila5);
-							Metodos.HabilitarJTextField(fila6);
-							fila6.get(0).requestFocus();
-						}
+					String rowWord5=Methods.CreateRowWord(row5);
+					if(rowWord5.length()!=5) {
+						lbl_ErrorLetter.setText("It has to be a word with 5 letters");
 					}
 					else {
-						Etiqueta_ErrorLetra.setText("La palabra no existe");
+						lbl_ErrorLetter.setText("");
+						if(dictionary.contains(rowWord5)) {
+							contadorGanar=Methods.CheckCorrectWord(row5,rowWord5,SecretWord.get(ContGameOver),contadorGanar);
+							if(contadorGanar==5) {
+								ContGameOver++;
+								ContVictory++;
+								Methods.DisableJTextField(row5);
+								Methods.PutGrayLetter(row5);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+							}
+							else if(rowWord5.length()==5) {
+								Methods.PutGrayLetter(row5);
+								contadorGanar=0;
+								ContRow++;
+								Methods.DisableJTextField(row5);
+								Methods.EnableJTextField(row6);
+								row6.get(0).requestFocus();
+							}
+						}
+						else {
+							lbl_ErrorLetter.setText("The word doesn't exist");
+						}
 					}
 					;
 					break;
 				case 5: 
-					palabraFila6=Metodos.CrearPalabraFila(fila6, palabraFila6);
-					if(diccionario.contains(palabraFila6)) {
-						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila6,palabraFila6,PalabraSecreta.get(ContadorJuegoFinalizado),Etiqueta_ErrorLetra,contadorGanar);
-						if(contadorGanar==5) {
-							ContadorJuegoFinalizado++;
-							ContadorVictoria++;
-							Metodos.DeshabilitarJTextField(fila6);
-							Metodos.PonerLetraGris(fila6);
-							Metodos.HasGanado(btn_Enviar, Etiqueta_Ganar);
-						}
-						else if(palabraFila6.length()==5) {
-							Metodos.PonerLetraGris(fila6);
-							contadorGanar=0;
-							contadorFila++;
-							Metodos.DeshabilitarJTextField(fila6);
-							Metodos.HasPerdido(btn_Enviar, Etiqueta_Ganar);
-						}
+					String rowWord6=Methods.CreateRowWord(row6);
+					if(rowWord6.length()!=5) {
+						lbl_ErrorLetter.setText("It has to be a word with 5 letters");
 					}
 					else {
-						Etiqueta_ErrorLetra.setText("La palabra no existe");
+						lbl_ErrorLetter.setText("");
+						if(dictionary.contains(rowWord6)) {
+							contadorGanar=Methods.CheckCorrectWord(row6,rowWord6,SecretWord.get(ContGameOver),contadorGanar);
+							if(contadorGanar==5) {
+								ContGameOver++;
+								ContVictory++;
+								Methods.DisableJTextField(row6);
+								Methods.PutGrayLetter(row6);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+							}
+							else if(rowWord6.length()==5) {
+								Methods.PutGrayLetter(row6);
+								contadorGanar=0;
+								ContRow++;
+								Methods.DisableJTextField(row6);
+								Methods.Lose(btn_Enviar, Etiqueta_Ganar);
+								letraOculta.setText("La palabra es: \""+SecretWord.get(ContGameOver)+"\"");
+							}
+						}
+						else {
+							lbl_ErrorLetter.setText("The word doesn't exist");
+						}
 					}
 					;
 					break;
 				}
 			}
 		});
-		
+
 		/*
 		 * LISTENER PARA LA EL ENTER FILA1
 		 */
-		
-		fila1.get(4).addKeyListener(new KeyAdapter(ArrayWordle) {
+
+		row1.get(4).addKeyListener(new KeyAdapterWindow(ArrayWordle) {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				int key = e.getKeyChar();
 				if(key==KeyEvent.VK_ENTER) {
 					int contadorGanar=0;
-					String palabraFila1="";
-
-					palabraFila1=Metodos.CrearPalabraFila(fila1, palabraFila1);
-					if(diccionario.contains(palabraFila1)) {
-						System.out.println(palabraFila1);
-						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila1,palabraFila1,PalabraSecreta.get(ContadorJuegoFinalizado),Etiqueta_ErrorLetra,contadorGanar);
-						System.out.println("Cont: "+contadorGanar);
-						if(contadorGanar==5) {
-							ContadorJuegoFinalizado++;
-							ContadorVictoria++;
-							Metodos.DeshabilitarJTextField(fila1);
-							Metodos.PonerLetraGris(fila1);
-							Metodos.HasGanado(btn_Enviar, Etiqueta_Ganar);
-						}
-						else if(palabraFila1.length()==5) {
-							Metodos.PonerLetraGris(fila1);
-							contadorGanar=0;
-							contadorFila++;
-							Metodos.DeshabilitarJTextField(fila1);
-							Metodos.HabilitarJTextField(fila2);
-							fila2.get(0).requestFocus();
-						}
+					String rowWord1=Methods.CreateRowWord(row1);
+					if(rowWord1.length()!=5) {
+						lbl_ErrorLetter.setText("It has to be a word with 5 letters");
 					}
 					else {
-						Etiqueta_ErrorLetra.setText("La palabra no existe");
-					}	
+						lbl_ErrorLetter.setText("");
+						if(dictionary.contains(rowWord1)) {
+							System.out.println(rowWord1);
+							contadorGanar=Methods.CheckCorrectWord(row1,rowWord1,SecretWord.get(ContGameOver),contadorGanar);
+							System.out.println("Cont: "+contadorGanar);
+							if(contadorGanar==5) {
+								ContGameOver++;
+								ContVictory++;
+								Methods.DisableJTextField(row1);
+								Methods.PutGrayLetter(row1);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+							}
+							else if(rowWord1.length()==5) {
+								Methods.PutGrayLetter(row1);
+								contadorGanar=0;
+								ContRow++;
+								Methods.DisableJTextField(row1);
+								Methods.EnableJTextField(row2);
+								row2.get(0).requestFocus();
+							}
+						}
+						else {
+							lbl_ErrorLetter.setText("The word doesn't exist");
+						}	
+					}
 				}
 			}
 		});
-		
+
 		/*
 		 * LISTENER PARA LA EL ENTER FILA2
 		 */
-		
-		fila2.get(4).addKeyListener(new KeyAdapter(ArrayWordle) {
+
+		row2.get(4).addKeyListener(new KeyAdapterWindow(ArrayWordle) {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				int key = e.getKeyChar();
 				if(key==KeyEvent.VK_ENTER) {
 					int contadorGanar=0;
-					String palabraFila2="";
-					palabraFila2=Metodos.CrearPalabraFila(fila2, palabraFila2);
-					if(diccionario.contains(palabraFila2)) {
-						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila2,palabraFila2,PalabraSecreta.get(ContadorJuegoFinalizado),Etiqueta_ErrorLetra,contadorGanar);
-						if(contadorGanar==5) {
-							ContadorJuegoFinalizado++;
-							ContadorVictoria++;
-							Metodos.DeshabilitarJTextField(fila1);
-							Metodos.PonerLetraGris(fila1);
-							Metodos.HasGanado(btn_Enviar, Etiqueta_Ganar);
+					String rowWord2=Methods.CreateRowWord(row2);
+					if(rowWord2.length()!=5) {
+						lbl_ErrorLetter.setText("It has to be a word with 5 letters");
+					}
+					else {
+						lbl_ErrorLetter.setText("");
+						if(dictionary.contains(rowWord2)) {
+							contadorGanar=Methods.CheckCorrectWord(row2,rowWord2,SecretWord.get(ContGameOver),contadorGanar);
+							if(contadorGanar==5) {
+								ContGameOver++;
+								ContVictory++;
+								Methods.DisableJTextField(row1);
+								Methods.PutGrayLetter(row1);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+							}
+							else if(rowWord2.length()==5) {
+								Methods.PutGrayLetter(row2);
+								contadorGanar=0;
+								ContRow++;
+								Methods.DisableJTextField(row2);
+								Methods.EnableJTextField(row3);
+								row3.get(0).requestFocus();
+							}
 						}
-						else if(palabraFila2.length()==5) {
-							Metodos.PonerLetraGris(fila2);
-							contadorGanar=0;
-							contadorFila++;
-							Metodos.DeshabilitarJTextField(fila2);
-							Metodos.HabilitarJTextField(fila3);
-							fila3.get(0).requestFocus();
+						else {
+							lbl_ErrorLetter.setText("The word doesn't exist");
 						}
-
-
-
 					}
 				}
 			}
@@ -459,114 +500,129 @@ public class Ventana {
 		 * LISTENER PARA LA EL ENTER FILA3
 		 */
 
-		fila3.get(4).addKeyListener(new KeyAdapter(ArrayWordle) {
+		row3.get(4).addKeyListener(new KeyAdapterWindow(ArrayWordle) {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				int key = e.getKeyChar();
 				if(key==KeyEvent.VK_ENTER) {
 					int contadorGanar=0;
-					String palabraFila3="";
-					palabraFila3=Metodos.CrearPalabraFila(fila3, palabraFila3);
-					if(diccionario.contains(palabraFila3)) {
-						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila3,palabraFila3,PalabraSecreta.get(ContadorJuegoFinalizado),Etiqueta_ErrorLetra,contadorGanar);
-						if(contadorGanar==5) {
-							ContadorJuegoFinalizado++;
-							ContadorVictoria++;
-							Metodos.DeshabilitarJTextField(fila3);
-							Metodos.PonerLetraGris(fila3);
-							Metodos.HasGanado(btn_Enviar, Etiqueta_Ganar);
-						}
-						else if(palabraFila3.length()==5) {
-							Metodos.PonerLetraGris(fila3);
-							contadorGanar=0;
-							contadorFila++;
-							Metodos.DeshabilitarJTextField(fila3);
-							Metodos.HabilitarJTextField(fila4);
-							fila4.get(0).requestFocus();
-						}
+					String rowWord3=Methods.CreateRowWord(row3);
+					if(rowWord3.length()!=5) {
+						lbl_ErrorLetter.setText("It has to be a word with 5 letters");
 					}
-
 					else {
-						Etiqueta_ErrorLetra.setText("La palabra no existe");
-					}	
+						lbl_ErrorLetter.setText("");
+						if(dictionary.contains(rowWord3)) {
+							contadorGanar=Methods.CheckCorrectWord(row3,rowWord3,SecretWord.get(ContGameOver),contadorGanar);
+							if(contadorGanar==5) {
+								ContGameOver++;
+								ContVictory++;
+								Methods.DisableJTextField(row3);
+								Methods.PutGrayLetter(row3);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+							}
+							else if(rowWord3.length()==5) {
+								Methods.PutGrayLetter(row3);
+								contadorGanar=0;
+								ContRow++;
+								Methods.DisableJTextField(row3);
+								Methods.EnableJTextField(row4);
+								row4.get(0).requestFocus();
+							}
+						}
+
+						else {
+							lbl_ErrorLetter.setText("The word doesn't exist");
+						}	
+					}
 				}
 			}
 		});
-		
+
 		/*
 		 * LISTENER PARA LA EL ENTER FILA4
 		 */
-		
-		fila4.get(4).addKeyListener(new KeyAdapter(ArrayWordle) {
+
+		row4.get(4).addKeyListener(new KeyAdapterWindow(ArrayWordle) {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				int key = e.getKeyChar();
 				if(key==KeyEvent.VK_ENTER) {
 					int contadorGanar=0;
-					String palabraFila4="";
-					palabraFila4=Metodos.CrearPalabraFila(fila4, palabraFila4);
-					if(diccionario.contains(palabraFila4)) {
-						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila4,palabraFila4,PalabraSecreta.get(ContadorJuegoFinalizado),Etiqueta_ErrorLetra,contadorGanar);
-						if(contadorGanar==5) {
-							ContadorJuegoFinalizado++;
-							ContadorVictoria++;
-							Metodos.DeshabilitarJTextField(fila4);
-							Metodos.PonerLetraGris(fila4);
-							Metodos.HasGanado(btn_Enviar, Etiqueta_Ganar);
-						}
-						else if(palabraFila4.length()==5) {
-							Metodos.PonerLetraGris(fila4);
-							contadorGanar=0;
-							contadorFila++;
-							Metodos.DeshabilitarJTextField(fila4);
-							Metodos.HabilitarJTextField(fila5);
-							fila5.get(0).requestFocus();
-						}
-
-
+					String rowWord4=Methods.CreateRowWord(row4);
+					if(rowWord4.length()!=5) {
+						lbl_ErrorLetter.setText("It has to be a word with 5 letters");
 					}
 					else {
-						Etiqueta_ErrorLetra.setText("La palabra no existe");
-					}	
+						lbl_ErrorLetter.setText("");
+						if(dictionary.contains(rowWord4)) {
+							contadorGanar=Methods.CheckCorrectWord(row4,rowWord4,SecretWord.get(ContGameOver),contadorGanar);
+							if(contadorGanar==5) {
+								ContGameOver++;
+								ContVictory++;
+								Methods.DisableJTextField(row4);
+								Methods.PutGrayLetter(row4);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+							}
+							else if(rowWord4.length()==5) {
+								Methods.PutGrayLetter(row4);
+								contadorGanar=0;
+								ContRow++;
+								Methods.DisableJTextField(row4);
+								Methods.EnableJTextField(row5);
+								row5.get(0).requestFocus();
+							}
+
+
+						}
+						else {
+							lbl_ErrorLetter.setText("The word doesn't exist");
+						}	
+					}
 				}
 			}
 		});
-		
+
 		/*
 		 * LISTENER PARA LA EL ENTER FILA5
 		 */
-		
-		fila5.get(4).addKeyListener(new KeyAdapter(ArrayWordle) {
+
+		row5.get(4).addKeyListener(new KeyAdapterWindow(ArrayWordle) {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				int key = e.getKeyChar();
 				if(key==KeyEvent.VK_ENTER) {
 					int contadorGanar=0;
-					String palabraFila5="";
-					palabraFila5=Metodos.CrearPalabraFila(fila5, palabraFila5);
-					if(diccionario.contains(palabraFila5)) {
-						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila5,palabraFila5,PalabraSecreta.get(ContadorJuegoFinalizado),Etiqueta_ErrorLetra,contadorGanar);
-						if(contadorGanar==5) {
-							ContadorJuegoFinalizado++;
-							ContadorVictoria++;
-							Metodos.DeshabilitarJTextField(fila5);
-							Metodos.PonerLetraGris(fila5);
-							Metodos.HasGanado(btn_Enviar, Etiqueta_Ganar);
-						}
-						else if(palabraFila5.length()==5) {
-							Metodos.PonerLetraGris(fila5);
-							contadorGanar=0;
-							contadorFila++;
-							Metodos.DeshabilitarJTextField(fila5);
-							Metodos.HabilitarJTextField(fila6);
-							fila6.get(0).requestFocus();
-						}
-
-
+					String rowWord5=Methods.CreateRowWord(row5);
+					if(rowWord5.length()!=5) {
+						lbl_ErrorLetter.setText("It has to be a word with 5 letters");
 					}
 					else {
-						Etiqueta_ErrorLetra.setText("La palabra no existe");
-					}	
+						lbl_ErrorLetter.setText("");
+						if(dictionary.contains(rowWord5)) {
+							contadorGanar=Methods.CheckCorrectWord(row5,rowWord5,SecretWord.get(ContGameOver),contadorGanar);
+							if(contadorGanar==5) {
+								ContGameOver++;
+								ContVictory++;
+								Methods.DisableJTextField(row5);
+								Methods.PutGrayLetter(row5);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+							}
+							else if(rowWord5.length()==5) {
+								Methods.PutGrayLetter(row5);
+								contadorGanar=0;
+								ContRow++;
+								Methods.DisableJTextField(row5);
+								Methods.EnableJTextField(row6);
+								row6.get(0).requestFocus();
+							}
+
+
+						}
+						else {
+							lbl_ErrorLetter.setText("The word doesn't exist");
+						}	
+					}
 				}
 			}
 		});
@@ -574,37 +630,43 @@ public class Ventana {
 		/*
 		 * LISTENER PARA LA EL ENTER FILA6
 		 */
-		
-		fila6.get(4).addKeyListener(new KeyAdapter(ArrayWordle) {
+
+		row6.get(4).addKeyListener(new KeyAdapterWindow(ArrayWordle) {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				int key = e.getKeyChar();
 				if(key==KeyEvent.VK_ENTER) {
 					int contadorGanar=0;
-					String palabraFila6="";
-					palabraFila6=Metodos.CrearPalabraFila(fila6, palabraFila6);
-					if(diccionario.contains(palabraFila6)) {
-						contadorGanar=Metodos.ComprobarPalabraCorrecta(fila6,palabraFila6,PalabraSecreta.get(ContadorJuegoFinalizado),Etiqueta_ErrorLetra,contadorGanar);
-						if(contadorGanar==5) {
-							ContadorJuegoFinalizado++;
-							ContadorVictoria++;
-							Metodos.DeshabilitarJTextField(fila6);
-							Metodos.PonerLetraGris(fila6);
-							Metodos.HasGanado(btn_Enviar, Etiqueta_Ganar);
-						}
-						else if(palabraFila6.length()==5) {
-							Metodos.PonerLetraGris(fila6);
-							contadorGanar=0;
-							contadorFila++;
-							Metodos.DeshabilitarJTextField(fila6);
-							Metodos.HasPerdido(btn_Enviar, Etiqueta_Ganar);
-						}
-
-
+					String rowWord6=Methods.CreateRowWord(row6);
+					if(rowWord6.length()!=5) {
+						lbl_ErrorLetter.setText("It has to be a word with 5 letters");
 					}
 					else {
-						Etiqueta_ErrorLetra.setText("La palabra no existe");
-					}	
+						lbl_ErrorLetter.setText("");
+						if(dictionary.contains(rowWord6)) {
+							contadorGanar=Methods.CheckCorrectWord(row6,rowWord6,SecretWord.get(ContGameOver),contadorGanar);
+							if(contadorGanar==5) {
+								ContGameOver++;
+								ContVictory++;
+								Methods.DisableJTextField(row6);
+								Methods.PutGrayLetter(row6);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+							}
+							else if(rowWord6.length()==5) {
+								Methods.PutGrayLetter(row6);
+								contadorGanar=0;
+								ContRow++;
+								Methods.DisableJTextField(row6);
+								Methods.Lose(btn_Enviar, Etiqueta_Ganar);
+								letraOculta.setText("The correct word is: \""+SecretWord.get(ContGameOver)+"\"");
+							}
+
+
+						}
+						else {
+							lbl_ErrorLetter.setText("The word doesn't exist");
+						}	
+					}
 				}
 			}
 		});
@@ -616,8 +678,9 @@ public class Ventana {
 		
 		btn_Reset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println(ContadorVictoria);
-				Metodos.ResetGame(Array2d, btn_Enviar, Etiqueta_Ganar);
+				System.out.println(ContVictory);
+				Methods.ResetGame(Array2d, btn_Enviar, Etiqueta_Ganar);
+				row1.get(0).requestFocus();
 			}
 		});
 		
