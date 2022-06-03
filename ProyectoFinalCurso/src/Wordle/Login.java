@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.JTextPane;
@@ -15,10 +16,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
+import javax.swing.JPanel;
 
 public class Login {
 
+	//Connection to MYSQL
+	Connection connection;
+	String url="jdbc:mysql://localhost:33306/Wordle";
+	String user="root";
+	String password="alumnoalumno";
+	
 	private JFrame frame;
 	private JTextField textField_Letter1;
 	private JTextField textField_Letter2;
@@ -111,22 +123,74 @@ public class Login {
 		textField_Letter5.setColumns(10);
 		textField_Letter5.setBounds(484, 250, 74, 69);
 		frame.getContentPane().add(textField_Letter5);
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.WHITE);
+		panel.setBounds(133, 463, 349, 331);
+		frame.getContentPane().add(panel);
+		panel.setLayout(null);
+		
+		JLabel lblName = new JLabel("NAME");
+		lblName.setFont(new Font("Dialog", Font.BOLD, 26));
+		lblName.setHorizontalAlignment(SwingConstants.CENTER);
+		lblName.setBounds(12, 17, 132, 55);
+		panel.add(lblName);
+		
+		JLabel lblWins = new JLabel("WINS");
+		lblWins.setFont(new Font("Dialog", Font.BOLD, 26));
+		lblWins.setHorizontalAlignment(SwingConstants.CENTER);
+		lblWins.setBounds(217, 32, 84, 25);
+		panel.add(lblWins);
+		
+		JLabel lbl_Name1 = new JLabel("");
+		lbl_Name1.setFont(new Font("Dialog", Font.BOLD, 18));
+		lbl_Name1.setBounds(36, 84, 96, 38);
+		panel.add(lbl_Name1);
+		
+		JLabel lbl_Name2 = new JLabel("");
+		lbl_Name2.setFont(new Font("Dialog", Font.BOLD, 16));
+		lbl_Name2.setBounds(36, 143, 96, 23);
+		panel.add(lbl_Name2);
+		
+		JLabel lbl_Name3 = new JLabel("");
+		lbl_Name3.setFont(new Font("Dialog", Font.BOLD, 14));
+		lbl_Name3.setBounds(36, 191, 96, 23);
+		panel.add(lbl_Name3);
+		
+		JLabel lbl_Name4 = new JLabel("");
+		lbl_Name4.setBounds(36, 243, 60, 17);
+		panel.add(lbl_Name4);
+		
+		JLabel lbl_Name5 = new JLabel("");
+		lbl_Name5.setBounds(36, 285, 60, 17);
+		panel.add(lbl_Name5);
+		
+		JLabel lbl_Win1 = new JLabel("");
+		lbl_Win1.setFont(new Font("Dialog", Font.BOLD, 18));
+		lbl_Win1.setBounds(241, 84, 96, 38);
+		panel.add(lbl_Win1);
+		
+		JLabel lbl_Win2 = new JLabel("");
+		lbl_Win2.setFont(new Font("Dialog", Font.BOLD, 16));
+		lbl_Win2.setBounds(241, 143, 96, 23);
+		panel.add(lbl_Win2);
+		
+		JLabel lbl_Win3 = new JLabel("");
+		lbl_Win3.setFont(new Font("Dialog", Font.BOLD, 14));
+		lbl_Win3.setBounds(241, 191, 96, 23);
+		panel.add(lbl_Win3);
+		
+		JLabel lbl_Win4 = new JLabel("");
+		lbl_Win4.setBounds(241, 243, 60, 17);
+		panel.add(lbl_Win4);
+		
+		JLabel lbl_Win5 = new JLabel("");
+		lbl_Win5.setBounds(241, 285, 60, 17);
+		panel.add(lbl_Win5);
+		
 		frame.setBounds(100, 100, 650, 850);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		/*
-		 * Boton que envia los datos a la base de datos y te lleva a la ventana del juego
-		 */
-		
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Ventana t= new Ventana();
-				t.frame.setVisible(true);
-				frame.dispose();
-			}
-		});
-		
-		
+			
 		/*
 		 * Listener que sirven para que el usuario ponga su nombre(como minimo tiene que tener una 2 letras y maximo 5)
 		 * */
@@ -138,6 +202,25 @@ public class Login {
 		Name.add(textField_Letter4);
 		Name.add(textField_Letter5);
 		
+		/*
+		 * ArrayLists que contienen el nombre y las victorias de los TOP 5
+		 */
+		ArrayList <JLabel> T5Name = new ArrayList <JLabel>();
+		T5Name.add(lbl_Name1);
+		T5Name.add(lbl_Name2);
+		T5Name.add(lbl_Name3);
+		T5Name.add(lbl_Name4);
+		T5Name.add(lbl_Name5);
+		
+		ArrayList <JLabel> T5Win = new ArrayList <JLabel>();
+		T5Win.add(lbl_Win1);
+		T5Win.add(lbl_Win2);
+		T5Win.add(lbl_Win3);
+		T5Win.add(lbl_Win4);
+		T5Win.add(lbl_Win5);
+		
+		Top5(T5Name,T5Win);
+		
 		
 		KeyListener KeyL=new KeyAdapterLogin(Name);
 		
@@ -147,5 +230,78 @@ public class Login {
 		}
 		
 		
+		/*
+		 * Boton que envia los datos a la base de datos y te lleva a la ventana del juego
+		 */
+
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String user=Methods.CreateRowWord(Name);
+				System.out.println(user);
+				if(user.length()>=1) {
+
+					if (!checkUser(user)){
+						addUser(user);
+					}			
+
+					Ventana t= new Ventana();
+					t.frame.setVisible(true);
+					frame.dispose();
+				}
+			}
+		});
+	}
+
+	public boolean  checkUser (String name) {
+
+		boolean userExists=false;
+		try {
+			connection=DriverManager.getConnection(url,user,password); 
+			Statement sentence=connection.createStatement();
+			ResultSet rs = sentence.executeQuery("select User from Player"); 
+
+			while (rs.next() && !userExists) { 
+				String comprobarUsuarioExistente=rs.getString("User");
+				System.out.println(comprobarUsuarioExistente);
+				if (name.equals(comprobarUsuarioExistente)){
+					userExists=true;
+				}
+			} 	
+		}
+
+		catch (Exception e) { 
+			System.out.println("ERROR");
+		}	
+		return userExists;
+	}
+	
+	public void addUser (String name){	
+		String query="insert into Player values ('"+ name +"',"+ 0 +")";
+		try {
+			connection=DriverManager.getConnection(url,user,password);
+			Statement sentence=connection.createStatement();
+			sentence.execute(query); 
+		} catch (Exception e) { 
+			e.printStackTrace();
+		}
+	}
+	public void Top5 (ArrayList<JLabel> name,ArrayList<JLabel> wins){	
+		String query="select User,Wins from Player order by Wins DESC";
+		try {
+			connection=DriverManager.getConnection(url,user,password);
+			Statement sentence=connection.createStatement();
+			ResultSet rs=sentence.executeQuery(query);
+			int i=0;
+			while (rs.next() && i<5) { 
+				name.get(i).setText(rs.getString("User"));
+				wins.get(i).setText(rs.getString("Wins"));
+				i++;
+			} 
+			
+
+		} catch (Exception e) { 
+			e.printStackTrace();
+		}
 	}
 }
+
