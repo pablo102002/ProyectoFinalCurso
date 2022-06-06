@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import java.awt.Color;
 
-public class Ventana {
+public class WordleOnline {
 
 	JFrame frame;
 	private JTextField textField;
@@ -31,6 +31,15 @@ public class Ventana {
 	protected int ContRow=0;
 	protected int ContVictory=0;
 	protected int ContGameOver=0;
+	public boolean NumConnection;
+	
+	
+
+	public WordleOnline(boolean numConnection) {
+		super();
+		NumConnection = numConnection;
+		initialize();
+	}
 
 	/**
 	 * Launch the application.
@@ -39,7 +48,7 @@ public class Ventana {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Ventana window = new Ventana();
+					WordleOnline window = new WordleOnline();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -51,7 +60,7 @@ public class Ventana {
 	/**
 	 * Create the application.
 	 */
-	public Ventana() {
+	public WordleOnline() {
 		initialize();
 	}
 
@@ -95,6 +104,24 @@ public class Ventana {
 		letraOculta.setFont(new Font("Dialog", Font.BOLD, 26));
 		letraOculta.setBounds(26, 714, 580, 91);
 		frame.getContentPane().add(letraOculta);
+		
+		/*
+		 * CONDICION LA CUAL HACE QUE SEAS CLIENTE O SERVIDOR
+		 */
+		if(NumConnection) {
+			 Server s = new Server();
+
+		        String puerto = "5043";
+		        s.ejecutarConexion(Integer.parseInt(puerto));
+		        s.escribirDatos();
+		}
+		else {
+			Client cliente = new Client();
+	        String ip = "127.0.0.1";
+	        String puerto = "5043";
+	        cliente.ejecutarConexion(ip, Integer.parseInt(puerto));
+	        cliente.escribirDatos();
+		}
 		
 		/*
 		 * ArrayList la cual contiene las posibles palabras a adivinar
@@ -173,7 +200,7 @@ public class Ventana {
 
 		//Crear los JTexfields mediante un bucle
 		JTextField[][] ArrayWordle=new JTextField[6][5];
-		KeyListener KeyL=new KeyAdapterWindow(ArrayWordle);
+		KeyListener KeyL=new KeyAdapterGame(ArrayWordle);
 
 		for(int i=0;i<6;i++) {
 			for(int j=0;j<5;j++) {
@@ -414,7 +441,7 @@ public class Ventana {
 		 * LISTENER PARA LA EL ENTER FILA1
 		 */
 
-		row1.get(4).addKeyListener(new KeyAdapterWindow(ArrayWordle) {
+		row1.get(4).addKeyListener(new KeyAdapterGame(ArrayWordle) {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				int key = e.getKeyChar();
@@ -458,7 +485,7 @@ public class Ventana {
 		 * LISTENER PARA LA EL ENTER FILA2
 		 */
 
-		row2.get(4).addKeyListener(new KeyAdapterWindow(ArrayWordle) {
+		row2.get(4).addKeyListener(new KeyAdapterGame(ArrayWordle) {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				int key = e.getKeyChar();
@@ -500,7 +527,7 @@ public class Ventana {
 		 * LISTENER PARA LA EL ENTER FILA3
 		 */
 
-		row3.get(4).addKeyListener(new KeyAdapterWindow(ArrayWordle) {
+		row3.get(4).addKeyListener(new KeyAdapterGame(ArrayWordle) {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				int key = e.getKeyChar();
@@ -543,7 +570,7 @@ public class Ventana {
 		 * LISTENER PARA LA EL ENTER FILA4
 		 */
 
-		row4.get(4).addKeyListener(new KeyAdapterWindow(ArrayWordle) {
+		row4.get(4).addKeyListener(new KeyAdapterGame(ArrayWordle) {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				int key = e.getKeyChar();
@@ -587,7 +614,7 @@ public class Ventana {
 		 * LISTENER PARA LA EL ENTER FILA5
 		 */
 
-		row5.get(4).addKeyListener(new KeyAdapterWindow(ArrayWordle) {
+		row5.get(4).addKeyListener(new KeyAdapterGame(ArrayWordle) {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				int key = e.getKeyChar();
@@ -631,7 +658,7 @@ public class Ventana {
 		 * LISTENER PARA LA EL ENTER FILA6
 		 */
 
-		row6.get(4).addKeyListener(new KeyAdapterWindow(ArrayWordle) {
+		row6.get(4).addKeyListener(new KeyAdapterGame(ArrayWordle) {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				int key = e.getKeyChar();

@@ -6,11 +6,11 @@ import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 
-public class KeyAdapterWindow implements KeyListener{
+public class KeyAdapterGame implements KeyListener{
 
 	JTextField[][] ArrayTextFields;
 	
-	public KeyAdapterWindow(JTextField[][] textfields) {
+	public KeyAdapterGame(JTextField[][] textfields) {
 		this.ArrayTextFields=textfields;
 	}
 

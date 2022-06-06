@@ -85,13 +85,13 @@ public class Methods {
 	
 	public static void Win(JButton btn_Enviar,JLabel Etiqueta_Ganar) {
 		Etiqueta_Ganar.setForeground(Color.GREEN);
-		Etiqueta_Ganar.setText("¡Has Ganado!");
+		Etiqueta_Ganar.setText("¡You Won!");
 		btn_Enviar.setEnabled(false);
 	}
 	
 	public static void Lose(JButton btn_Enviar,JLabel Etiqueta_Ganar) {
 		Etiqueta_Ganar.setForeground(Color.RED);
-		Etiqueta_Ganar.setText("¡Has Perdido!");
+		Etiqueta_Ganar.setText("¡You Lose !");
 		btn_Enviar.setEnabled(false);
 	}
 

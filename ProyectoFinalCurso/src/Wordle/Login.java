@@ -244,8 +244,8 @@ public class Login {
 						addUser(user);
 					}			
 
-					Ventana t= new Ventana();
-					t.frame.setVisible(true);
+					SelectGameMode s= new SelectGameMode();
+					s.frame.setVisible(true);
 					frame.dispose();
 				}
 			}
