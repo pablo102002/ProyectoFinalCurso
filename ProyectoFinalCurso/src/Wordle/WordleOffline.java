@@ -91,29 +91,40 @@ public class WordleOffline {
 		Etiqueta_Ganar.setForeground(Color.GREEN);
 		Etiqueta_Ganar.setBounds(156, 642, 304, 55);
 		frame.getContentPane().add(Etiqueta_Ganar);
-		
+
 		JLabel letraOculta = new JLabel("");
 		letraOculta.setFont(new Font("Dialog", Font.BOLD, 26));
 		letraOculta.setBounds(26, 714, 580, 91);
 		frame.getContentPane().add(letraOculta);
+
+		JButton btn_Help = new JButton("");
+		btn_Help.setBounds(519, 98, 68, 27);
+		btn_Help.setIcon(new ImageIcon(WordleOffline.class.getResource("/img/icons8-acerca-de-17.png")));
+		frame.getContentPane().add(btn_Help);
 		
-			JButton btn_Help = new JButton("");
-			btn_Help.setBounds(519, 98, 68, 27);
-			btn_Help.setIcon(new ImageIcon(WordleOffline.class.getResource("/img/icons8-acerca-de-17.png")));
-			frame.getContentPane().add(btn_Help);
-	
-			btn_Help.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					Icon icono = new ImageIcon(getClass().getResource("/img/RulesWordle.png"));
-	
-					JOptionPane.showMessageDialog(
-							frame, icono, 
-							"RULES",
-							JOptionPane.PLAIN_MESSAGE);
-				}
-			});
-			
-		
+		JButton btn_GoBack = new JButton("Go Back");
+		btn_GoBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				SelectGameMode SGM = new SelectGameMode();
+				SGM.frame.setVisible(true);
+				frame.dispose();
+			}
+		});
+		btn_GoBack.setBounds(501, 595, 105, 27);
+		frame.getContentPane().add(btn_GoBack);
+
+		btn_Help.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Icon icono = new ImageIcon(getClass().getResource("/img/RulesWordle.png"));
+
+				JOptionPane.showMessageDialog(
+						frame, icono, 
+						"RULES",
+						JOptionPane.PLAIN_MESSAGE);
+			}
+		});
+
+
 		/*
 		 * ArrayList la cual contiene las posibles palabras a adivinar
 		 */
