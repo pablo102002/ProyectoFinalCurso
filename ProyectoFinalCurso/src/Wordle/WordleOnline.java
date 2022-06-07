@@ -8,6 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.event.CaretListener;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
@@ -15,12 +17,18 @@ import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Color;
 
 public class WordleOnline {
@@ -31,15 +39,16 @@ public class WordleOnline {
 	protected int ContRow=0;
 	protected int ContVictory=0;
 	protected int ContGameOver=0;
-	public boolean NumConnection;
+	ServerSocket server;
+    String serverIP;
+    Socket socket;
+    Socket client;
+    private final static int PORT = 5034;
+    static BufferedReader inputServer; 
+    static PrintStream output;
+    static BufferedReader inputClient;
 	
 	
-
-	public WordleOnline(boolean numConnection) {
-		super();
-		NumConnection = numConnection;
-		initialize();
-	}
 
 	/**
 	 * Launch the application.
@@ -105,23 +114,21 @@ public class WordleOnline {
 		letraOculta.setBounds(26, 714, 580, 91);
 		frame.getContentPane().add(letraOculta);
 		
-		/*
-		 * CONDICION LA CUAL HACE QUE SEAS CLIENTE O SERVIDOR
-		 */
-		if(NumConnection) {
-			 Server s = new Server();
+		JButton btn_Help = new JButton("");
+		btn_Help.setBounds(519, 98, 68, 27);
+		btn_Help.setIcon(new ImageIcon(WordleOnline.class.getResource("/img/icons8-acerca-de-17.png")));
+		frame.getContentPane().add(btn_Help);
 
-		        String puerto = "5043";
-		        s.ejecutarConexion(Integer.parseInt(puerto));
-		        s.escribirDatos();
-		}
-		else {
-			Client cliente = new Client();
-	        String ip = "127.0.0.1";
-	        String puerto = "5043";
-	        cliente.ejecutarConexion(ip, Integer.parseInt(puerto));
-	        cliente.escribirDatos();
-		}
+		btn_Help.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Icon icono = new ImageIcon(getClass().getResource("/img/RulesWordle.png"));
+
+				JOptionPane.showMessageDialog(
+						frame, icono, 
+						"RULES",
+						JOptionPane.PLAIN_MESSAGE);
+			}
+		});
 		
 		/*
 		 * ArrayList la cual contiene las posibles palabras a adivinar
@@ -243,6 +250,42 @@ public class WordleOnline {
 			}
 		}
 
+		/*
+		 * CONDICION LA CUAL HACE QUE SEAS CLIENTE O SERVIDOR
+		 */
+		String [] ConnectionMode= {"Server", "Client"};
+		String ConnectedAs = (String)JOptionPane.showInputDialog(frame,"How will you access the game?","Create game...",JOptionPane.QUESTION_MESSAGE, null, ConnectionMode, ConnectionMode[0]);
+		if (ConnectedAs.equals("Server")) {
+            try {
+                 server = new ServerSocket(PORT); 
+                 socket = server.accept();
+                 socket.setSoLinger (true, 10);
+                 output = new PrintStream(socket.getOutputStream());
+                 inputServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                
+                 ReceivePlay threadServer = new ReceivePlay(inputServer,ContGameOver,Array2d,btn_Enviar,btn_Reset,frame);
+                 threadServer.start();
+
+
+             }
+             catch (IOException ex) {
+                System.err.println(ex.getMessage());
+            }
+        }else if (ConnectedAs.equals("Client")) {
+            serverIP = JOptionPane.showInputDialog(frame,"Introduce the IP you want to connect to");
+            try {
+                socket = new Socket(serverIP, PORT);
+                inputClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                output = new PrintStream(socket.getOutputStream());
+
+                 ReceivePlay threadClient = new ReceivePlay(inputClient,ContGameOver,Array2d,btn_Enviar,btn_Reset,frame);
+                 threadClient.start();
+            }
+            catch (IOException ex) {
+                System.err.println(ex.getMessage());
+            }
+        }
+		
 		btn_Enviar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int contadorGanar=0;
@@ -256,7 +299,7 @@ public class WordleOnline {
 					else {
 						lbl_ErrorLetter.setText("");
 						if(dictionary.contains(rowWord1)) {
-							contadorGanar=Methods.CheckCorrectWord(row1,rowWord1,SecretWord.get(ContGameOver),contadorGanar);
+							contadorGanar=Methods.CheckCorrectWord(row1,rowWord1,SecretWord.get(ContGameOver));
 							if(contadorGanar==5) {
 								ContGameOver++;
 								ContVictory++;
@@ -287,7 +330,7 @@ public class WordleOnline {
 					else {
 						lbl_ErrorLetter.setText("");
 						if(dictionary.contains(rowWord2)) {
-							contadorGanar=Methods.CheckCorrectWord(row2,rowWord2,SecretWord.get(ContGameOver),contadorGanar);
+							contadorGanar=Methods.CheckCorrectWord(row2,rowWord2,SecretWord.get(ContGameOver));
 							if(contadorGanar==5) {
 								ContGameOver++;
 								ContVictory++;
@@ -317,7 +360,7 @@ public class WordleOnline {
 					else {
 						lbl_ErrorLetter.setText("");
 						if(dictionary.contains(rowWord3)) {
-							contadorGanar=Methods.CheckCorrectWord(row3,rowWord3,SecretWord.get(ContGameOver),contadorGanar);
+							contadorGanar=Methods.CheckCorrectWord(row3,rowWord3,SecretWord.get(ContGameOver));
 							if(contadorGanar==5) {
 								ContGameOver++;
 								ContVictory++;
@@ -348,7 +391,7 @@ public class WordleOnline {
 					else {
 						lbl_ErrorLetter.setText("");
 						if(dictionary.contains(rowWord4)) {
-							contadorGanar=Methods.CheckCorrectWord(row4,rowWord4,SecretWord.get(ContGameOver),contadorGanar);
+							contadorGanar=Methods.CheckCorrectWord(row4,rowWord4,SecretWord.get(ContGameOver));
 
 							if(contadorGanar==5) {
 								ContGameOver++;
@@ -379,7 +422,7 @@ public class WordleOnline {
 					else {
 						lbl_ErrorLetter.setText("");
 						if(dictionary.contains(rowWord5)) {
-							contadorGanar=Methods.CheckCorrectWord(row5,rowWord5,SecretWord.get(ContGameOver),contadorGanar);
+							contadorGanar=Methods.CheckCorrectWord(row5,rowWord5,SecretWord.get(ContGameOver));
 							if(contadorGanar==5) {
 								ContGameOver++;
 								ContVictory++;
@@ -410,7 +453,7 @@ public class WordleOnline {
 					else {
 						lbl_ErrorLetter.setText("");
 						if(dictionary.contains(rowWord6)) {
-							contadorGanar=Methods.CheckCorrectWord(row6,rowWord6,SecretWord.get(ContGameOver),contadorGanar);
+							contadorGanar=Methods.CheckCorrectWord(row6,rowWord6,SecretWord.get(ContGameOver));
 							if(contadorGanar==5) {
 								ContGameOver++;
 								ContVictory++;
@@ -455,7 +498,7 @@ public class WordleOnline {
 						lbl_ErrorLetter.setText("");
 						if(dictionary.contains(rowWord1)) {
 							System.out.println(rowWord1);
-							contadorGanar=Methods.CheckCorrectWord(row1,rowWord1,SecretWord.get(ContGameOver),contadorGanar);
+							contadorGanar=Methods.CheckCorrectWord(row1,rowWord1,SecretWord.get(ContGameOver));
 							System.out.println("Cont: "+contadorGanar);
 							if(contadorGanar==5) {
 								ContGameOver++;
@@ -498,7 +541,7 @@ public class WordleOnline {
 					else {
 						lbl_ErrorLetter.setText("");
 						if(dictionary.contains(rowWord2)) {
-							contadorGanar=Methods.CheckCorrectWord(row2,rowWord2,SecretWord.get(ContGameOver),contadorGanar);
+							contadorGanar=Methods.CheckCorrectWord(row2,rowWord2,SecretWord.get(ContGameOver));
 							if(contadorGanar==5) {
 								ContGameOver++;
 								ContVictory++;
@@ -540,7 +583,7 @@ public class WordleOnline {
 					else {
 						lbl_ErrorLetter.setText("");
 						if(dictionary.contains(rowWord3)) {
-							contadorGanar=Methods.CheckCorrectWord(row3,rowWord3,SecretWord.get(ContGameOver),contadorGanar);
+							contadorGanar=Methods.CheckCorrectWord(row3,rowWord3,SecretWord.get(ContGameOver));
 							if(contadorGanar==5) {
 								ContGameOver++;
 								ContVictory++;
@@ -583,7 +626,7 @@ public class WordleOnline {
 					else {
 						lbl_ErrorLetter.setText("");
 						if(dictionary.contains(rowWord4)) {
-							contadorGanar=Methods.CheckCorrectWord(row4,rowWord4,SecretWord.get(ContGameOver),contadorGanar);
+							contadorGanar=Methods.CheckCorrectWord(row4,rowWord4,SecretWord.get(ContGameOver));
 							if(contadorGanar==5) {
 								ContGameOver++;
 								ContVictory++;
@@ -627,7 +670,7 @@ public class WordleOnline {
 					else {
 						lbl_ErrorLetter.setText("");
 						if(dictionary.contains(rowWord5)) {
-							contadorGanar=Methods.CheckCorrectWord(row5,rowWord5,SecretWord.get(ContGameOver),contadorGanar);
+							contadorGanar=Methods.CheckCorrectWord(row5,rowWord5,SecretWord.get(ContGameOver));
 							if(contadorGanar==5) {
 								ContGameOver++;
 								ContVictory++;
@@ -671,7 +714,7 @@ public class WordleOnline {
 					else {
 						lbl_ErrorLetter.setText("");
 						if(dictionary.contains(rowWord6)) {
-							contadorGanar=Methods.CheckCorrectWord(row6,rowWord6,SecretWord.get(ContGameOver),contadorGanar);
+							contadorGanar=Methods.CheckCorrectWord(row6,rowWord6,SecretWord.get(ContGameOver));
 							if(contadorGanar==5) {
 								ContGameOver++;
 								ContVictory++;
@@ -713,4 +756,5 @@ public class WordleOnline {
 		
 	}
 }
+
 

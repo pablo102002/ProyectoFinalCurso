@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 public class Methods {
@@ -28,7 +30,7 @@ public class Methods {
 		}
 		return palabra;
 	}
-	public static  int CheckCorrectWord(ArrayList<JTextField> fila,String palabra, String palabraResuelta,int contadorGanar) {
+	public static  int CheckCorrectWord(ArrayList<JTextField> fila,String palabra, String palabraResuelta) {
 		int contador=0;
 	
 			char [] p=palabra.toCharArray();
@@ -46,31 +48,57 @@ public class Methods {
 			charPalabraUsuario.add(p[3]);
 			charPalabraUsuario.add(p[4]);
 			
+			ArrayList<Character> LetraAmarilla= new ArrayList<Character>();
+			ArrayList<Character> LetraVerde= new ArrayList<Character>();
 
 			for(int i=0;i<charPalabraResuelta.size();i++) {
-				//Esta condicion valida si una palabra es correcta, la pone de colorr vere y la borra
-				//del array para que no vuelva a aparecer
+				//Esta condicion valida si una palabra es correcta, la pone de color verde
 				if(charPalabraUsuario.get(i)==charPalabraResuelta.get(i)) {
 					fila.get(i).setBackground(Color.GREEN);
+					LetraVerde.add(charPalabraUsuario.get(i));
 					contador++;
 				}
 			}
-			int contEqualLetters=0;
+
 			for(int x=0;x<charPalabraResuelta.size();x++) {
 				for(int y=0;y<charPalabraUsuario.size();y++) {
 					//Esta condicion sirve para que cuando una letra exista pero no este en la
 					//posicion correcta dentro de la palabra correcta se marque de color amarillo
 					if((charPalabraUsuario.get(x)==charPalabraResuelta.get(y)) && (fila.get(x).getBackground()!=Color.GREEN)) {
-						for(int j=0;j<fila.size();j++) {
-							if(charPalabraUsuario.get(x)==charPalabraUsuario.get(j))
-								contEqualLetters++;
-						}
-						if(contEqualLetters==1) {
 							fila.get(x).setBackground(Color.YELLOW);
+							LetraAmarilla.add(charPalabraUsuario.get(x));
+					}
+				}
+			}
+			/*
+			 * Una vez añadidas las letras de colores a ArrayLists ahora tenemos que compararlas y si se repiten
+			 * quitarle el color
+			 */
+			if(LetraVerde.size()>=1 && LetraAmarilla.size()>=1) {
+				for(int i=0;i<LetraVerde.size();i++){
+					for(int j=0;j<LetraAmarilla.size();j++) {
+						if(LetraAmarilla.get(j)==LetraVerde.get(i)) {
+							fila.get(j).setBackground(Color.WHITE);
 						}
 					}
 				}
 			}
+			
+			/*
+			 * Este bucle sirve para que cuando la palabra escrita por el usuario contenga 2 letras iguales
+			 * y la palabra secreta no, solo mostrara una letra en amarillo ya que si no se sobreentendera que 
+			 * la palabra secreta contiene 2 letras iguales
+			 */
+			for(int i=0;i<LetraAmarilla.size();i++){
+				for(int j=0;j<LetraAmarilla.size();j++) {
+					if(LetraAmarilla.get(j)==LetraAmarilla.get(i)) {
+						fila.get(j).setBackground(Color.WHITE);
+						LetraAmarilla.remove(j);
+					}
+				}
+				}
+			
+			
 			return contador;
 	}
 
@@ -85,13 +113,13 @@ public class Methods {
 	
 	public static void Win(JButton btn_Enviar,JLabel Etiqueta_Ganar) {
 		Etiqueta_Ganar.setForeground(Color.GREEN);
-		Etiqueta_Ganar.setText("¡You Won!");
+		Etiqueta_Ganar.setText("¡Has Ganado!");
 		btn_Enviar.setEnabled(false);
 	}
 	
 	public static void Lose(JButton btn_Enviar,JLabel Etiqueta_Ganar) {
 		Etiqueta_Ganar.setForeground(Color.RED);
-		Etiqueta_Ganar.setText("¡You Lose !");
+		Etiqueta_Ganar.setText("¡Has Perdido!");
 		btn_Enviar.setEnabled(false);
 	}
 
@@ -109,6 +137,16 @@ public class Methods {
 		}
 		btn_Enviar.setEnabled(true);
 		Etiqueta_Ganar.setText("");
+	}
+	
+	public static void EndGame(ArrayList<JTextField> Array2d,JButton btn_Enviar, JButton btn_Reset,JFrame frame) {
+		for(int i=0;i<Array2d.size();i++) {
+			Array2d.get(i).setEditable(false);
+		}
+		btn_Enviar.setEnabled(false);
+		btn_Reset.setEnabled(false);
+		JOptionPane.showInputDialog(frame,"Tu rival ha adivinado 5 palabras antes que tu");
+		
 	}
 
 }
