@@ -27,9 +27,9 @@ public class Login {
 
 	//Connection to MYSQL
 	Connection connection;
-	String url="jdbc:mysql://localhost:33306/Wordle";
-	String user="root";
-	String password="alumnoalumno";
+	String url=ConnectMYSQL.url;
+	String user=ConnectMYSQL.user;
+	String password=ConnectMYSQL.password;
 	
 	private JFrame frame;
 	private JTextField textField_Letter1;
@@ -219,7 +219,9 @@ public class Login {
 		T5Win.add(lbl_Win4);
 		T5Win.add(lbl_Win5);
 		
-		Top5(T5Name,T5Win);
+		
+		
+		ConnectMYSQL.Top5(T5Name,T5Win);
 		
 		
 		KeyListener KeyL=new KeyAdapterLogin(Name);
@@ -240,8 +242,8 @@ public class Login {
 				System.out.println(user);
 				if(user.length()>=1) {
 
-					if (!checkUser(user)){
-						addUser(user);
+					if (!ConnectMYSQL.checkUser(user)){
+						ConnectMYSQL.addUser(user);
 					}			
 
 					SelectGameMode s= new SelectGameMode();
@@ -252,56 +254,7 @@ public class Login {
 		});
 	}
 
-	public boolean  checkUser (String name) {
-
-		boolean userExists=false;
-		try {
-			connection=DriverManager.getConnection(url,user,password); 
-			Statement sentence=connection.createStatement();
-			ResultSet rs = sentence.executeQuery("select User from Player"); 
-
-			while (rs.next() && !userExists) { 
-				String comprobarUsuarioExistente=rs.getString("User");
-				System.out.println(comprobarUsuarioExistente);
-				if (name.equals(comprobarUsuarioExistente)){
-					userExists=true;
-				}
-			} 	
-		}
-
-		catch (Exception e) { 
-			System.out.println("ERROR");
-		}	
-		return userExists;
-	}
 	
-	public void addUser (String name){	
-		String query="insert into Player values ('"+ name +"',"+ 0 +")";
-		try {
-			connection=DriverManager.getConnection(url,user,password);
-			Statement sentence=connection.createStatement();
-			sentence.execute(query); 
-		} catch (Exception e) { 
-			e.printStackTrace();
-		}
-	}
-	public void Top5 (ArrayList<JLabel> name,ArrayList<JLabel> wins){	
-		String query="select User,Wins from Player order by Wins DESC";
-		try {
-			connection=DriverManager.getConnection(url,user,password);
-			Statement sentence=connection.createStatement();
-			ResultSet rs=sentence.executeQuery(query);
-			int i=0;
-			while (rs.next() && i<5) { 
-				name.get(i).setText(rs.getString("User"));
-				wins.get(i).setText(rs.getString("Wins"));
-				i++;
-			} 
-			
-
-		} catch (Exception e) { 
-			e.printStackTrace();
-		}
-	}
+	
 }
 

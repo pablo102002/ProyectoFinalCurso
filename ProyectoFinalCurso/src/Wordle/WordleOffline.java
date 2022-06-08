@@ -33,6 +33,7 @@ public class WordleOffline {
 	private JTextField textField;
 	private JTextField textField_1;
 	protected int ContRow=0;
+	protected boolean Win=false;
 	protected int ContVictory=0;
 	protected int ContGameOver=0;
 
@@ -251,7 +252,7 @@ public class WordleOffline {
 								ContVictory++;
 								Methods.DisableJTextField(row1);
 								Methods.PutGrayLetter(row1);
-								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar,Win);
 							}
 							else if(rowWord1.length()==5) {
 								Methods.PutGrayLetter(row1);
@@ -282,7 +283,7 @@ public class WordleOffline {
 								ContVictory++;
 								Methods.DisableJTextField(row2);
 								Methods.PutGrayLetter(row2);
-								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar,Win);
 							}
 							else if(rowWord2.length()==5) {
 								Methods.PutGrayLetter(row2);
@@ -312,7 +313,7 @@ public class WordleOffline {
 								ContVictory++;
 								Methods.DisableJTextField(row3);
 								Methods.PutGrayLetter(row3);
-								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar,Win);
 							}
 							else if(rowWord3.length()==5) {
 								Methods.PutGrayLetter(row3);
@@ -344,7 +345,7 @@ public class WordleOffline {
 								ContVictory++;
 								Methods.DisableJTextField(row4);
 								Methods.PutGrayLetter(row4);
-								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar,Win);
 							}
 							else if(rowWord4.length()==5) {
 								Methods.PutGrayLetter(row4);
@@ -374,7 +375,7 @@ public class WordleOffline {
 								ContVictory++;
 								Methods.DisableJTextField(row5);
 								Methods.PutGrayLetter(row5);
-								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar,Win);
 							}
 							else if(rowWord5.length()==5) {
 								Methods.PutGrayLetter(row5);
@@ -405,7 +406,7 @@ public class WordleOffline {
 								ContVictory++;
 								Methods.DisableJTextField(row6);
 								Methods.PutGrayLetter(row6);
-								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar,Win);
 							}
 							else if(rowWord6.length()==5) {
 								Methods.PutGrayLetter(row6);
@@ -451,7 +452,7 @@ public class WordleOffline {
 								ContVictory++;
 								Methods.DisableJTextField(row1);
 								Methods.PutGrayLetter(row1);
-								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar,Win);
 							}
 							else if(rowWord1.length()==5) {
 								Methods.PutGrayLetter(row1);
@@ -493,7 +494,7 @@ public class WordleOffline {
 								ContVictory++;
 								Methods.DisableJTextField(row1);
 								Methods.PutGrayLetter(row1);
-								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar,Win);
 							}
 							else if(rowWord2.length()==5) {
 								Methods.PutGrayLetter(row2);
@@ -535,7 +536,7 @@ public class WordleOffline {
 								ContVictory++;
 								Methods.DisableJTextField(row3);
 								Methods.PutGrayLetter(row3);
-								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar,Win);
 							}
 							else if(rowWord3.length()==5) {
 								Methods.PutGrayLetter(row3);
@@ -578,7 +579,7 @@ public class WordleOffline {
 								ContVictory++;
 								Methods.DisableJTextField(row4);
 								Methods.PutGrayLetter(row4);
-								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar,Win);
 							}
 							else if(rowWord4.length()==5) {
 								Methods.PutGrayLetter(row4);
@@ -622,7 +623,7 @@ public class WordleOffline {
 								ContVictory++;
 								Methods.DisableJTextField(row5);
 								Methods.PutGrayLetter(row5);
-								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar,Win);
 							}
 							else if(rowWord5.length()==5) {
 								Methods.PutGrayLetter(row5);
@@ -666,7 +667,7 @@ public class WordleOffline {
 								ContVictory++;
 								Methods.DisableJTextField(row6);
 								Methods.PutGrayLetter(row6);
-								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar,Win);
 							}
 							else if(rowWord6.length()==5) {
 								Methods.PutGrayLetter(row6);

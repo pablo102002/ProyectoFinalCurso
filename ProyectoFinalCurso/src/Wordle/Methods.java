@@ -111,7 +111,8 @@ public class Methods {
 		}
 	}
 	
-	public static void Win(JButton btn_Enviar,JLabel Etiqueta_Ganar) {
+	public static void Win(JButton btn_Enviar,JLabel Etiqueta_Ganar, boolean Win) {
+		Win=true;
 		Etiqueta_Ganar.setForeground(Color.GREEN);
 		Etiqueta_Ganar.setText("¡Has Ganado!");
 		btn_Enviar.setEnabled(false);

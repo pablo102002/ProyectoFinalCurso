@@ -37,8 +37,8 @@ public class WordleOnline {
 	private JTextField textField;
 	private JTextField textField_1;
 	protected int ContRow=0;
+	protected boolean Win=false;
 	protected int ContVictory=0;
-	protected int ContGameOver=0;
 	ServerSocket server;
     String serverIP;
     Socket socket;
@@ -158,24 +158,9 @@ public class WordleOnline {
 		/*
 		 * Aqui sacamos la palabra secreta mediante un numero random
 		 */
-		ArrayList<String> SecretWord = new ArrayList<String>();
 		int number = (int)(Math.random()*GuessWord.size()-1+1);
-		SecretWord.add(GuessWord.get(number));
-		GuessWord.remove(number);
-		number = (int)(Math.random()*GuessWord.size()-1+1);
-		SecretWord.add(GuessWord.get(number));
-		GuessWord.remove(number);
-		number = (int)(Math.random()*GuessWord.size()-1+1);
-		SecretWord.add(GuessWord.get(number));
-		number = (int)(Math.random()*GuessWord.size()-1+1);
-		SecretWord.add(GuessWord.get(number));
-		number = (int)(Math.random()*GuessWord.size()-1+1);
-		SecretWord.add(GuessWord.get(number));
-		System.out.println(SecretWord.get(0));
-		System.out.println(SecretWord.get(1));
-		System.out.println(SecretWord.get(2));
-		System.out.println(SecretWord.get(3));
-		System.out.println(SecretWord.get(4));
+		String SecretWord=GuessWord.get(number);
+		System.out.println(SecretWord);
 		
 		
 		/*
@@ -262,8 +247,7 @@ public class WordleOnline {
                  socket.setSoLinger (true, 10);
                  output = new PrintStream(socket.getOutputStream());
                  inputServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                
-                 ThreadWordle threadServer = new ThreadWordle(inputServer,ContGameOver,Array2d,btn_Enviar,btn_Reset,frame);
+                 ThreadWordle threadServer = new ThreadWordle(inputServer,Win);
                  threadServer.start();
 
 
@@ -278,7 +262,7 @@ public class WordleOnline {
                 inputClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 output = new PrintStream(socket.getOutputStream());
 
-                 ThreadWordle threadClient = new ThreadWordle(inputClient,ContGameOver,Array2d,btn_Enviar,btn_Reset,frame);
+                 ThreadWordle threadClient = new ThreadWordle(inputClient,Win);
                  threadClient.start();
             }
             catch (IOException ex) {
@@ -299,13 +283,12 @@ public class WordleOnline {
 					else {
 						lbl_ErrorLetter.setText("");
 						if(dictionary.contains(rowWord1)) {
-							contadorGanar=Methods.CheckCorrectWord(row1,rowWord1,SecretWord.get(ContGameOver));
+							contadorGanar=Methods.CheckCorrectWord(row1,rowWord1,SecretWord);
 							if(contadorGanar==5) {
-								ContGameOver++;
 								ContVictory++;
 								Methods.DisableJTextField(row1);
 								Methods.PutGrayLetter(row1);
-								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar,Win);
 							}
 							else if(rowWord1.length()==5) {
 								Methods.PutGrayLetter(row1);
@@ -330,13 +313,12 @@ public class WordleOnline {
 					else {
 						lbl_ErrorLetter.setText("");
 						if(dictionary.contains(rowWord2)) {
-							contadorGanar=Methods.CheckCorrectWord(row2,rowWord2,SecretWord.get(ContGameOver));
+							contadorGanar=Methods.CheckCorrectWord(row2,rowWord2,SecretWord);
 							if(contadorGanar==5) {
-								ContGameOver++;
 								ContVictory++;
 								Methods.DisableJTextField(row2);
 								Methods.PutGrayLetter(row2);
-								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar,Win);
 							}
 							else if(rowWord2.length()==5) {
 								Methods.PutGrayLetter(row2);
@@ -360,13 +342,12 @@ public class WordleOnline {
 					else {
 						lbl_ErrorLetter.setText("");
 						if(dictionary.contains(rowWord3)) {
-							contadorGanar=Methods.CheckCorrectWord(row3,rowWord3,SecretWord.get(ContGameOver));
+							contadorGanar=Methods.CheckCorrectWord(row3,rowWord3,SecretWord);
 							if(contadorGanar==5) {
-								ContGameOver++;
 								ContVictory++;
 								Methods.DisableJTextField(row3);
 								Methods.PutGrayLetter(row3);
-								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar,Win);
 							}
 							else if(rowWord3.length()==5) {
 								Methods.PutGrayLetter(row3);
@@ -391,14 +372,13 @@ public class WordleOnline {
 					else {
 						lbl_ErrorLetter.setText("");
 						if(dictionary.contains(rowWord4)) {
-							contadorGanar=Methods.CheckCorrectWord(row4,rowWord4,SecretWord.get(ContGameOver));
+							contadorGanar=Methods.CheckCorrectWord(row4,rowWord4,SecretWord);
 
 							if(contadorGanar==5) {
-								ContGameOver++;
 								ContVictory++;
 								Methods.DisableJTextField(row4);
 								Methods.PutGrayLetter(row4);
-								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar,Win);
 							}
 							else if(rowWord4.length()==5) {
 								Methods.PutGrayLetter(row4);
@@ -422,13 +402,12 @@ public class WordleOnline {
 					else {
 						lbl_ErrorLetter.setText("");
 						if(dictionary.contains(rowWord5)) {
-							contadorGanar=Methods.CheckCorrectWord(row5,rowWord5,SecretWord.get(ContGameOver));
+							contadorGanar=Methods.CheckCorrectWord(row5,rowWord5,SecretWord);
 							if(contadorGanar==5) {
-								ContGameOver++;
 								ContVictory++;
 								Methods.DisableJTextField(row5);
 								Methods.PutGrayLetter(row5);
-								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar,Win);
 							}
 							else if(rowWord5.length()==5) {
 								Methods.PutGrayLetter(row5);
@@ -453,13 +432,12 @@ public class WordleOnline {
 					else {
 						lbl_ErrorLetter.setText("");
 						if(dictionary.contains(rowWord6)) {
-							contadorGanar=Methods.CheckCorrectWord(row6,rowWord6,SecretWord.get(ContGameOver));
+							contadorGanar=Methods.CheckCorrectWord(row6,rowWord6,SecretWord);
 							if(contadorGanar==5) {
-								ContGameOver++;
 								ContVictory++;
 								Methods.DisableJTextField(row6);
 								Methods.PutGrayLetter(row6);
-								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar,Win);
 							}
 							else if(rowWord6.length()==5) {
 								Methods.PutGrayLetter(row6);
@@ -467,7 +445,7 @@ public class WordleOnline {
 								ContRow++;
 								Methods.DisableJTextField(row6);
 								Methods.Lose(btn_Enviar, Etiqueta_Ganar);
-								letraOculta.setText("La palabra es: \""+SecretWord.get(ContGameOver)+"\"");
+								letraOculta.setText("La palabra es: \""+SecretWord+"\"");
 							}
 						}
 						else {
@@ -498,14 +476,13 @@ public class WordleOnline {
 						lbl_ErrorLetter.setText("");
 						if(dictionary.contains(rowWord1)) {
 							System.out.println(rowWord1);
-							contadorGanar=Methods.CheckCorrectWord(row1,rowWord1,SecretWord.get(ContGameOver));
+							contadorGanar=Methods.CheckCorrectWord(row1,rowWord1,SecretWord);
 							System.out.println("Cont: "+contadorGanar);
 							if(contadorGanar==5) {
-								ContGameOver++;
 								ContVictory++;
 								Methods.DisableJTextField(row1);
 								Methods.PutGrayLetter(row1);
-								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar,Win);
 							}
 							else if(rowWord1.length()==5) {
 								Methods.PutGrayLetter(row1);
@@ -541,13 +518,12 @@ public class WordleOnline {
 					else {
 						lbl_ErrorLetter.setText("");
 						if(dictionary.contains(rowWord2)) {
-							contadorGanar=Methods.CheckCorrectWord(row2,rowWord2,SecretWord.get(ContGameOver));
+							contadorGanar=Methods.CheckCorrectWord(row2,rowWord2,SecretWord);
 							if(contadorGanar==5) {
-								ContGameOver++;
 								ContVictory++;
 								Methods.DisableJTextField(row1);
 								Methods.PutGrayLetter(row1);
-								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar,Win);
 							}
 							else if(rowWord2.length()==5) {
 								Methods.PutGrayLetter(row2);
@@ -583,13 +559,12 @@ public class WordleOnline {
 					else {
 						lbl_ErrorLetter.setText("");
 						if(dictionary.contains(rowWord3)) {
-							contadorGanar=Methods.CheckCorrectWord(row3,rowWord3,SecretWord.get(ContGameOver));
+							contadorGanar=Methods.CheckCorrectWord(row3,rowWord3,SecretWord);
 							if(contadorGanar==5) {
-								ContGameOver++;
 								ContVictory++;
 								Methods.DisableJTextField(row3);
 								Methods.PutGrayLetter(row3);
-								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar,Win);
 							}
 							else if(rowWord3.length()==5) {
 								Methods.PutGrayLetter(row3);
@@ -626,13 +601,12 @@ public class WordleOnline {
 					else {
 						lbl_ErrorLetter.setText("");
 						if(dictionary.contains(rowWord4)) {
-							contadorGanar=Methods.CheckCorrectWord(row4,rowWord4,SecretWord.get(ContGameOver));
+							contadorGanar=Methods.CheckCorrectWord(row4,rowWord4,SecretWord);
 							if(contadorGanar==5) {
-								ContGameOver++;
 								ContVictory++;
 								Methods.DisableJTextField(row4);
 								Methods.PutGrayLetter(row4);
-								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar,Win);
 							}
 							else if(rowWord4.length()==5) {
 								Methods.PutGrayLetter(row4);
@@ -670,13 +644,12 @@ public class WordleOnline {
 					else {
 						lbl_ErrorLetter.setText("");
 						if(dictionary.contains(rowWord5)) {
-							contadorGanar=Methods.CheckCorrectWord(row5,rowWord5,SecretWord.get(ContGameOver));
+							contadorGanar=Methods.CheckCorrectWord(row5,rowWord5,SecretWord);
 							if(contadorGanar==5) {
-								ContGameOver++;
 								ContVictory++;
 								Methods.DisableJTextField(row5);
 								Methods.PutGrayLetter(row5);
-								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar,Win);
 							}
 							else if(rowWord5.length()==5) {
 								Methods.PutGrayLetter(row5);
@@ -714,13 +687,12 @@ public class WordleOnline {
 					else {
 						lbl_ErrorLetter.setText("");
 						if(dictionary.contains(rowWord6)) {
-							contadorGanar=Methods.CheckCorrectWord(row6,rowWord6,SecretWord.get(ContGameOver));
+							contadorGanar=Methods.CheckCorrectWord(row6,rowWord6,SecretWord);
 							if(contadorGanar==5) {
-								ContGameOver++;
 								ContVictory++;
 								Methods.DisableJTextField(row6);
 								Methods.PutGrayLetter(row6);
-								Methods.Win(btn_Enviar, Etiqueta_Ganar);
+								Methods.Win(btn_Enviar, Etiqueta_Ganar,Win);
 							}
 							else if(rowWord6.length()==5) {
 								Methods.PutGrayLetter(row6);
@@ -728,7 +700,7 @@ public class WordleOnline {
 								ContRow++;
 								Methods.DisableJTextField(row6);
 								Methods.Lose(btn_Enviar, Etiqueta_Ganar);
-								letraOculta.setText("The correct word is: \""+SecretWord.get(ContGameOver)+"\"");
+								letraOculta.setText("The correct word is: \""+SecretWord+"\"");
 							}
 
 
@@ -753,6 +725,8 @@ public class WordleOnline {
 				row1.get(0).requestFocus();
 			}
 		});
+		
+		
 		
 	}
 }
