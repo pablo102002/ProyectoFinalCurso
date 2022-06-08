@@ -253,9 +253,9 @@ public class WordleOnline {
 		/*
 		 * CONDICION LA CUAL HACE QUE SEAS CLIENTE O SERVIDOR
 		 */
-		String [] ConnectionMode= {"Server", "Client"};
+		String [] ConnectionMode= {"Create Game", "Join Game"};
 		String ConnectedAs = (String)JOptionPane.showInputDialog(frame,"How will you access the game?","Create game...",JOptionPane.QUESTION_MESSAGE, null, ConnectionMode, ConnectionMode[0]);
-		if (ConnectedAs.equals("Server")) {
+		if (ConnectedAs.equals("Create Game")) {
             try {
                  server = new ServerSocket(PORT); 
                  socket = server.accept();
@@ -263,7 +263,7 @@ public class WordleOnline {
                  output = new PrintStream(socket.getOutputStream());
                  inputServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 
-                 ReceivePlay threadServer = new ReceivePlay(inputServer,ContGameOver,Array2d,btn_Enviar,btn_Reset,frame);
+                 ThreadWordle threadServer = new ThreadWordle(inputServer,ContGameOver,Array2d,btn_Enviar,btn_Reset,frame);
                  threadServer.start();
 
 
@@ -271,14 +271,14 @@ public class WordleOnline {
              catch (IOException ex) {
                 System.err.println(ex.getMessage());
             }
-        }else if (ConnectedAs.equals("Client")) {
+        }else if (ConnectedAs.equals("Join Game")) {
             serverIP = JOptionPane.showInputDialog(frame,"Introduce the IP you want to connect to");
             try {
                 socket = new Socket(serverIP, PORT);
                 inputClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 output = new PrintStream(socket.getOutputStream());
 
-                 ReceivePlay threadClient = new ReceivePlay(inputClient,ContGameOver,Array2d,btn_Enviar,btn_Reset,frame);
+                 ThreadWordle threadClient = new ThreadWordle(inputClient,ContGameOver,Array2d,btn_Enviar,btn_Reset,frame);
                  threadClient.start();
             }
             catch (IOException ex) {
